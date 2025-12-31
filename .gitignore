@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Allow .gitignore itself
+!.gitignore
+
+# Allow the iOS delivery folder and all its contents
+!iOS_Delivery/
+!iOS_Delivery/**
+

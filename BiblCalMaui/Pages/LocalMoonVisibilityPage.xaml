@@ -4,174 +4,142 @@
              x:Class="BiblCalMaui.Pages.LocalMoonVisibilityPage"
              Title="Local Moon Visibility">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="15">
+       <!--Give all Entry and Picker background white-->
+       <ContentPage.Resources>
+              <ResourceDictionary>
+                     <Style TargetType="Entry">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+                     <Style TargetType="Picker">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+              </ResourceDictionary>
+       </ContentPage.Resources>
 
-            <Label Text="Local Moon Visibility"
-                   Style="{StaticResource Headline}"
-                   SemanticProperties.HeadingLevel="Level1"/>
+       <VerticalStackLayout Padding="10"
+                            Spacing="15"
+                            BackgroundColor="#c0c0ff">
 
-            <Label Text="Calculate visible new moons for your location"
-                   Style="{StaticResource SubHeadline}"
-                   SemanticProperties.HeadingLevel="Level2"/>
+              <!-- Year Input and Calculate Button, and Location on Same Row -->
+              <Grid RowDefinitions="auto"
+                    ColumnDefinitions="auto,auto,*"
+                    ColumnSpacing="5"
+                    RowSpacing="10">
+                     <Entry x:Name="YearEntry"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Placeholder="Enter year"
+                            Keyboard="Numeric"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"/>
+                     <ImageButton x:Name="CalculateButton"
+                                  Source="local_moon.png"
+                                  Clicked="OnCalculateClicked"
+                                  Grid.Row="0"
+                                  Grid.Column="1"
+                                  WidthRequest="40"
+                                  HeightRequest="40"
+                                  BackgroundColor="Transparent"/>
+                     <Picker x:Name="LocationPicker"
+                             Grid.Row="0"
+                             Grid.Column="2"
+                             Title="Select a location or enter manually"
+                             ItemDisplayBinding="{Binding Name}"
+                             SelectedIndexChanged="OnLocationSelected"/>
+              </Grid>
 
-            <!-- Location Selection -->
-            <Frame BorderColor="Gray"
-                   Padding="10">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Location:"
-                           FontAttributes="Bold"/>
-                    <Picker x:Name="LocationPicker"
-                            Title="Select a location or enter manually"
-                            ItemDisplayBinding="{Binding Name}"
-                            SelectedIndexChanged="OnLocationSelected"/>
-
-                    <Label Text="Or enter coordinates manually:"
-                           FontAttributes="Bold"
-                           Margin="0,10,0,0"/>
-
-                    <!-- Latitude Input -->
-                    <Grid ColumnDefinitions="*,*,*,*"
-                          RowDefinitions="Auto,Auto"
-                          ColumnSpacing="5"
-                          RowSpacing="5">
-                        <Label Text="Latitude:"
-                               Grid.Row="0"
-                               Grid.Column="0"
-                               VerticalOptions="Center"/>
-                        <Entry x:Name="LatDegEntry"
-                               Placeholder="Deg"
-                               Keyboard="Numeric"
-                               Grid.Row="1"
-                               Grid.Column="0"
-                               WidthRequest="60"/>
-                        <Label Text="°"
-                               Grid.Row="1"
-                               Grid.Column="0"
-                               HorizontalOptions="End"
-                               VerticalOptions="Center"
-                               Margin="0,0,5,0"/>
-                        <Entry x:Name="LatMinEntry"
-                               Placeholder="Min"
-                               Keyboard="Numeric"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               WidthRequest="60"/>
-                        <Label Text="'"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               HorizontalOptions="End"
-                               VerticalOptions="Center"
-                               Margin="0,0,5,0"/>
-                        <Picker x:Name="LatDirPicker"
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                WidthRequest="80">
+              <!-- Latitude Inputs -->
+              <Grid ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
+                    ColumnSpacing="5"
+                    RowDefinitions="Auto,Auto">
+                     <!-- Latitude -->
+                     <Entry x:Name="LatDegEntry"
+                            Placeholder="Deg"
+                            Keyboard="Numeric"
+                            Grid.Column="0"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"/>
+                     <Entry x:Name="LatMinEntry"
+                            Placeholder="Min"
+                            Keyboard="Numeric"
+                            Grid.Column="1"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"/>
+                     <Picker x:Name="LatDirPicker"
+                             Grid.Column="2"
+                             VerticalOptions="Center">
                             <Picker.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>N</x:String>
-                                    <x:String>S</x:String>
-                                </x:Array>
+                                   <x:Array Type="{x:Type x:String}">
+                                          <x:String>N</x:String>
+                                          <x:String>S</x:String>
+                                   </x:Array>
                             </Picker.ItemsSource>
-                        </Picker>
-                        <Label x:Name="LatDirLabel"
-                               Text="N"
-                               Grid.Row="1"
-                               Grid.Column="2"
-                               IsVisible="False"/>
-                    </Grid>
-
-                    <!-- Longitude Input -->
-                    <Grid ColumnDefinitions="*,*,*,*"
-                          RowDefinitions="Auto,Auto"
-                          ColumnSpacing="5"
-                          RowSpacing="5">
-                        <Label Text="Longitude:"
-                               Grid.Row="0"
-                               Grid.Column="0"
-                               VerticalOptions="Center"/>
-                        <Entry x:Name="LongDegEntry"
-                               Placeholder="Deg"
-                               Keyboard="Numeric"
-                               Grid.Row="1"
-                               Grid.Column="0"
-                               WidthRequest="60"/>
-                        <Label Text="°"
-                               Grid.Row="1"
-                               Grid.Column="0"
-                               HorizontalOptions="End"
-                               VerticalOptions="Center"
-                               Margin="0,0,5,0"/>
-                        <Entry x:Name="LongMinEntry"
-                               Placeholder="Min"
-                               Keyboard="Numeric"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               WidthRequest="60"/>
-                        <Label Text="'"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               HorizontalOptions="End"
-                               VerticalOptions="Center"
-                               Margin="0,0,5,0"/>
-                        <Picker x:Name="LongDirPicker"
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                WidthRequest="80">
+                     </Picker>
+                     <!-- Spacing -->
+                     <BoxView Grid.Column="3"
+                              BackgroundColor="Transparent"
+                              WidthRequest="10"/>
+                     <!-- Longitude -->
+                     <Entry x:Name="LongDegEntry"
+                            Placeholder="Deg"
+                            Keyboard="Numeric"
+                            Grid.Column="4"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"/>
+                     <Entry x:Name="LongMinEntry"
+                            Placeholder="Min"
+                            Keyboard="Numeric"
+                            Grid.Column="5"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"/>
+                     <Picker x:Name="LongDirPicker"
+                             Grid.Column="6"
+                             VerticalOptions="Center">
                             <Picker.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>E</x:String>
-                                    <x:String>W</x:String>
-                                </x:Array>
+                                   <x:Array Type="{x:Type x:String}">
+                                          <x:String>E</x:String>
+                                          <x:String>W</x:String>
+                                   </x:Array>
                             </Picker.ItemsSource>
-                        </Picker>
-                        <Label x:Name="LongDirLabel"
-                               Text="E"
-                               Grid.Row="1"
-                               Grid.Column="2"
-                               IsVisible="False"/>
-                    </Grid>
+                     </Picker>
+                     <!-- Spacing -->
+                     <BoxView Grid.Column="7"
+                              BackgroundColor="Transparent"
+                              WidthRequest="10"/>
+                     <!-- GMT Offset -->
+                     <Entry x:Name="GMTOffsetEntry"
+                            Grid.Column="8"
+                            Placeholder="2"
+                            Keyboard="Numeric"
+                            Grid.Row="0"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"/>
+                     <!-- Labels -->
+                     <Label Text="Latitude"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            VerticalOptions="Center"/>
+                     <Label Text="Longitude"
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Grid.ColumnSpan="3"
+                            VerticalOptions="Center"/>
+                     <Label Text="UTC/GMT"
+                            Grid.Row="1"
+                            Grid.Column="8"
+                            VerticalOptions="Center"/>
+              </Grid>
 
-                    <!-- GMT Offset -->
-                    <Grid ColumnDefinitions="Auto,*"
-                          ColumnSpacing="10">
-                        <Label Text="GMT Offset:"
-                               VerticalOptions="Center"/>
-                        <Entry x:Name="GMTOffsetEntry"
-                               Placeholder="e.g., 2, -5, 8"
-                               Keyboard="Numeric"/>
-                    </Grid>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Year Input -->
-            <Frame BorderColor="Gray"
-                   Padding="10">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Year:"
-                           FontAttributes="Bold"/>
-                    <Entry x:Name="YearEntry"
-                           Placeholder="Enter year (e.g., 2024 or -4004 for BCE)"
-                           Keyboard="Numeric"/>
-                    <Button Text="Calculate Local Moons"
-                            Clicked="OnCalculateClicked"
-                            HorizontalOptions="Fill"
-                            ImageSource="local_moon.png"/>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Results -->
-            <Frame BorderColor="Gray"
-                   Padding="10">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Results:"
-                           FontAttributes="Bold"/>
-                    <Border StrokeThickness="1"
-                            Stroke="LightGray"
-                            Padding="5">
-                        <ScrollView HeightRequest="400"
-                                    Orientation="Vertical">
+              <!-- Results -->
+              <Border StrokeThickness="3"
+                      Stroke="LightGray"
+                      BackgroundColor="White"
+                      Padding="5">
+                     <ScrollView HeightRequest="700"
+                                 Orientation="Vertical">
                             <Label x:Name="ResultsLabel"
                                    Text="Results will appear here..."
                                    TextColor="Black"
@@ -180,12 +148,10 @@
                                    LineBreakMode="WordWrap"
                                    VerticalOptions="Start"
                                    HorizontalOptions="Start"/>
-                        </ScrollView>
-                    </Border>
-                </VerticalStackLayout>
-            </Frame>
+                     </ScrollView>
+              </Border>
 
-        </VerticalStackLayout>
-    </ScrollView>
+       </VerticalStackLayout>
+
 </ContentPage>
 

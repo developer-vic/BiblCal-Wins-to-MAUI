@@ -38,6 +38,9 @@ namespace BiblCalMaui.Pages
             LatDirPicker.SelectedIndex = 0; // Default to N
             LongDirPicker.SelectedIndex = 0; // Default to E
 
+            // Set default year to current year
+            YearEntry.Text = DateTime.Now.Year.ToString();
+
             // Set default location if available
             if (_locations.Count > 0)
             {
@@ -108,12 +111,14 @@ namespace BiblCalMaui.Pages
 
         private async void OnCalculateClicked(object? sender, EventArgs e)
         {
+            ImageButton? calculateButton = sender as ImageButton;
+            
             try
             {
                 // Disable button during calculation
-                if (sender is Button btn)
+                if (calculateButton != null)
                 {
-                    btn.IsEnabled = false;
+                    calculateButton.IsEnabled = false;
                 }
 
                 _outputWriter.Clear();
@@ -126,9 +131,9 @@ namespace BiblCalMaui.Pages
                 if (string.IsNullOrWhiteSpace(YearEntry.Text))
                 {
                     ResultsLabel.Text = "Please enter a year.";
-                    if (sender is Button button)
+                    if (calculateButton != null)
                     {
-                        button.IsEnabled = true;
+                        calculateButton.IsEnabled = true;
                     }
                     return;
                 }
@@ -136,9 +141,9 @@ namespace BiblCalMaui.Pages
                 if (!double.TryParse(YearEntry.Text, out double year))
                 {
                     ResultsLabel.Text = "Invalid year format. Please enter a number.";
-                    if (sender is Button button)
+                    if (calculateButton != null)
                     {
-                        button.IsEnabled = true;
+                        calculateButton.IsEnabled = true;
                     }
                     return;
                 }
@@ -150,9 +155,9 @@ namespace BiblCalMaui.Pages
                     !int.TryParse(LongMinEntry.Text, out int longMin))
                 {
                     ResultsLabel.Text = "Please enter valid latitude and longitude coordinates.";
-                    if (sender is Button button)
+                    if (calculateButton != null)
                     {
-                        button.IsEnabled = true;
+                        calculateButton.IsEnabled = true;
                     }
                     return;
                 }
@@ -252,9 +257,9 @@ namespace BiblCalMaui.Pages
             finally
             {
                 // Re-enable button
-                if (sender is Button btn)
+                if (calculateButton != null)
                 {
-                    btn.IsEnabled = true;
+                    calculateButton.IsEnabled = true;
                 }
             }
         }

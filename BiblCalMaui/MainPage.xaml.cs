@@ -146,9 +146,4 @@ public partial class MainPage : ContentPage
 		
 		ResultsLabel.Text = _outputWriter.GetOutput();
 	}
-
-	private async void OnNavigateToLocalMoons(object? sender, EventArgs e)
-	{
-		await Shell.Current.GoToAsync("//LocalMoonVisibilityPage");
-	}
 }

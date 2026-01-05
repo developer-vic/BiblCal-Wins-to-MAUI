@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BiblCalMaui.MainPage"
-             Title="Biblical Calendar">
+             Title="Biblical Calendar Calculator">
 
     <ScrollView>
         <VerticalStackLayout
@@ -10,26 +10,13 @@
             Spacing="15">
             
             <Label
-                Text="Biblical Calendar Calculator"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
-
-            <Label
                 Text="Calculate Biblical calendar dates using the Core library"
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2" />
-
-            <Frame BorderColor="Gray" Padding="10">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Navigation:" FontAttributes="Bold" />
-                    <Button
-                        Text="Local Moon Visibility"
-                        Clicked="OnNavigateToLocalMoons"
-                        HorizontalOptions="Fill" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <Frame BorderColor="Gray" Padding="10">
+    
+            <Border Stroke="Gray"
+                    StrokeThickness="1"
+                    Padding="10">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Enter Year:" FontAttributes="Bold" />
                     <Entry x:Name="YearEntry" 
@@ -42,9 +29,11 @@
                         Clicked="OnCalculateClicked"
                         HorizontalOptions="Fill" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame BorderColor="Gray" Padding="10">
+            <Border Stroke="Gray"
+                    StrokeThickness="1"
+                    Padding="10">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Results:" FontAttributes="Bold" />
                     <Border StrokeThickness="1" Stroke="LightGray" Padding="5">
@@ -60,7 +49,7 @@
                         </ScrollView>
                     </Border>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

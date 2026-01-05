@@ -29,9 +29,9 @@ namespace BiblCalCore
             return Math.Round(value, decimalPlaces, MidpointRounding.AwayFromZero);
         }
 
-        // Month names
-        private static readonly string[] MonthName = { "", "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December" };
+        // Month names - use abbreviated names to match Windows output format
+        private static readonly string[] MonthName = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         // Calculation variables (matching Windows app)
         private double _ln = 0; // Month number
@@ -303,7 +303,7 @@ namespace BiblCalCore
                 return;
             }
 
-            // Print date
+            // Print date (matching Windows - no explicit padding)
             _dayString = _daye.ToString();
             if (_dayString.Contains("."))
             {
@@ -313,6 +313,7 @@ namespace BiblCalCore
             {
                 _dayString = " " + _dayString;
             }
+            // Windows: TPrint(DayString + " " + MonthName[...]) - no extra spacing
             _outputWriter.Write(_dayString + " " + MonthName[(int)_m]);
 
             // Windows uses LG directly (which is already a fraction 0-1 after InitializeVariables), not LG * 360
@@ -632,6 +633,10 @@ namespace BiblCalCore
                 {
                     _hmString = _hmString.Substring(Math.Max(_hmString.Length - 2, 0));
                 }
+                // Windows: TPrint("   ") only if !SunsetFlag (for local calculations, SunsetFlag is false)
+                // But check if date column already has trailing space - if so, reduce spacing to avoid double spacing
+                // Windows prints "   " (3 spaces) before sunset, but date might already have trailing space
+                // Actually, Windows date output doesn't have trailing space, so we need "   " (3 spaces)
                 _outputWriter.Write("   ");
                 if (_ht < 10)
                 {
@@ -645,6 +650,8 @@ namespace BiblCalCore
                 {
                     _outputWriter.Write(_htString + ":" + _hmString);
                 }
+                // Add spacing after sunset time to align with "Moonset" column header
+                _outputWriter.Write("   ");
             }
         }
 
@@ -919,11 +926,14 @@ namespace BiblCalCore
             {
                 if (number < 0)
                 {
+                    // For negative numbers < 1, use "-0.XX" format (no leading space)
                     tempString = "-0" + tempString.Substring(Math.Max(tempString.Length - (tempString.Length - 1), 0));
                 }
                 else
                 {
-                    tempString = " 0" + tempString.Substring(Math.Max(tempString.Length - (tempString.Length - 1), 0));
+                    // For positive numbers < 1, Windows uses "0.XX" format (no leading space in FormatToString)
+                    // The column spacing ("    " before illumination) handles the spacing
+                    tempString = "0" + tempString.Substring(Math.Max(tempString.Length - (tempString.Length - 1), 0));
                 }
             }
             if (Math.Floor(number) == number && tempString.Length + 2 <= length + 1)
@@ -942,8 +952,9 @@ namespace BiblCalCore
                 tempString = tempString + "0";
             }
             // Remove trailing zeros after decimal point (matching Windows VB.NET Conversion.Str behavior)
-            // But only if string is already at least the minimum required length
-            if (tempString.Contains(".") && tempString.Length >= length)
+            // But ensure final string maintains exact target length for column alignment
+            int targetLength = length + 1; // Target length including decimal point
+            if (tempString.Contains(".") && tempString.Length >= targetLength)
             {
                 string original = tempString;
                 tempString = tempString.TrimEnd('0');
@@ -959,11 +970,16 @@ namespace BiblCalCore
                         tempString = tempString.Substring(0, tempString.Length - 1); // Remove trailing decimal
                     }
                 }
-                // Only use trimmed version if it's still at least the minimum length
-                if (tempString.Length < length)
-                {
-                    tempString = original; // Keep original if trimming makes it too short
-                }
+            }
+            // Always pad to exact target length for perfect column alignment
+            while (tempString.Length < targetLength)
+            {
+                tempString = tempString + " ";
+            }
+            // Ensure we don't exceed the target length
+            if (tempString.Length > targetLength)
+            {
+                tempString = tempString.Substring(0, targetLength);
             }
             result = tempString;
             return result;

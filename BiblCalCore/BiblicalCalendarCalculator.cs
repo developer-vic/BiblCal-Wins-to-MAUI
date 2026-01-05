@@ -136,10 +136,13 @@ namespace BiblCalCore
             DR = 0.01745329251993d;
             
             // Default to Jerusalem if no location is set
+            // Jerusalem: 31° 46′ North, 35° 14′ East
+            // Latitude: 31 + 46/60 = 31.766666...
+            // Longitude: 35 + 14/60 = 35.233333... (East is negative in this system)
             if (LG == 0 && LT == 0)
             {
-                LG = -35.244d; // Longitude of Jerusalem
-                LT = 31.78d;   // Latitude of Jerusalem
+                LG = -35.2333333333333d; // Longitude of Jerusalem (35° 14′ East)
+                LT = 31.7666666666667d;   // Latitude of Jerusalem (31° 46′ North)
                 HR = 14;       // Hour location of Jerusalem GMT + 2
             }
         }

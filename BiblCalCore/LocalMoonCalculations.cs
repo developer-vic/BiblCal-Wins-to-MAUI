@@ -120,14 +120,11 @@ namespace BiblCalCore
         /// </summary>
         public void CalculateLocalMoons(double year, double longitude, double latitude, double hr, string locationName = "")
         {
-            // CRITICAL: Windows GetLocation produces swapped coordinates due to XML attribute swap:
-            // LG = Degrees(txtLongDeg) = DegLon value (which is actually latitude)
-            // LT = Degrees(txtLatDeg) = DegLat value (which is actually longitude)
-            // So LG stores latitude value, LT stores longitude value (variable names are misleading!)
-            // To match Windows: We receive parameters swapped (longitude param = latitude value, latitude param = longitude value)
+            // Windows GetLocation: LG = Degrees(txtLongDeg) = Longitude, LT = Degrees(txtLatDeg) = Latitude
+            // LG = Longitude, LT = Latitude (variable names match their meaning)
             _calculator.GregorianYear = year;
-            _calculator.LG = longitude;  // LG stores latitude value (passed as "longitude" parameter)
-            _calculator.LT = latitude;   // LT stores longitude value (passed as "latitude" parameter)
+            _calculator.LG = longitude;  // LG is Longitude
+            _calculator.LT = latitude;   // LT is Latitude
             _calculator.HR = hr;
 
             // Initialize variables (matching InitializeVariables)
@@ -170,10 +167,10 @@ namespace BiblCalCore
         private void InitializeCalculationVariables()
         {
             // Matching Windows InitializeVariables (lines 1331-1338)
-            // Note: LG stores latitude value, LT stores longitude value (due to Windows coordinate swap)
             // We need to use original values before conversion
-            double lgOriginal = _calculator.LG; // In degrees (actually latitude value due to swap)
-            double ltOriginal = _calculator.LT; // In degrees (actually longitude value due to swap)
+            // LG is in degrees (longitude), LT is in degrees (latitude)
+            double lgOriginal = _calculator.LG; // In degrees (longitude)
+            double ltOriginal = _calculator.LT; // In degrees (latitude)
             double hr = _calculator.HR;
 
             _sj = 0;

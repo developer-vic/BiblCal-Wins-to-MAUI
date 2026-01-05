@@ -75,8 +75,10 @@ namespace BiblCalCore
             public void SetCurrentLocation(string location) { }
             public int GetNumberOfLocations() => 1;
             public string GetLocationName(int index) => "Jerusalem";
-            public double GetLocationLatitude(int index) => 31.78;
-            public double GetLocationLongitude(int index) => -35.24;
+            // Jerusalem: 31° 46′ North, 35° 14′ East
+            // In this system, East longitudes are negative
+            public double GetLocationLatitude(int index) => 31.7666666666667; // 31° 46′ North
+            public double GetLocationLongitude(int index) => -35.2333333333333; // 35° 14′ East (negative for East)
             public string GetLocationGMTOffset(int index) => "2";
             public void SaveUserData() { }
         }

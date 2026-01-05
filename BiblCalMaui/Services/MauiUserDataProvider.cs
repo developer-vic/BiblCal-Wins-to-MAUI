@@ -8,19 +8,12 @@ namespace BiblCalMaui.Services
     public class MauiUserDataProvider : IUserDataProvider
     {
         private string _currentLocation = "Jerusalem, Israel";
-        // CRITICAL: Windows XML attributes are swapped!
-        // XML: long="31.78" (this is latitude), lat="-35.21" (this is longitude)
-        // Windows ReadUserDataXML stores: DegLat = lat attribute value (longitude), DegLon = long attribute value (latitude)
-        // So to match Windows internal storage exactly:
-        // Latitude field should store what Windows calls DegLat (from XML "lat" attribute = longitude value)
-        // Longitude field should store what Windows calls DegLon (from XML "long" attribute = latitude value)
-        // For Jerusalem: XML long="31.78" lat="-35.21"
-        // Windows stores: DegLat = -35.21 (longitude), DegLon = 31.78 (latitude)
-        // We store to match: Latitude = -35.21 (DegLat), Longitude = 31.78 (DegLon)
+        // Coordinates stored correctly: Latitude and Longitude match their actual geographic values
+        // In this system, East longitudes are negative
         private readonly LocationData[] _locations = new LocationData[]
         {
-            // All coordinates stored to match Windows: Latitude = XML "lat" attribute, Longitude = XML "long" attribute
-            new LocationData { Name = "Jerusalem, Israel", Latitude = -35.2166666666667, Longitude = 31.7833333333333, GMTOffset = "2" },
+            // Jerusalem: 31° 46' N, 35° 14' E
+            new LocationData { Name = "Jerusalem, Israel", Latitude = 31.7666666666667, Longitude = -35.2333333333333, GMTOffset = "2" },
             new LocationData { Name = "Lennon, Michigan, USA", Latitude = 42.95, Longitude = 83.95, GMTOffset = "4" },
             new LocationData { Name = "New York, New York, USA", Latitude = 40.7333333333333, Longitude = 73.9166666666667, GMTOffset = "5" },
             new LocationData { Name = "Chicago, Illinois, USA", Latitude = 41.85, Longitude = 87.65, GMTOffset = "6" },

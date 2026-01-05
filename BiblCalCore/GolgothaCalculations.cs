@@ -125,8 +125,11 @@ namespace BiblCalCore
         private GolgothaResult CalculateGolgothaForYear(double year)
         {
             // Set location to Jerusalem
-            _calculator.LG = -35.244d;
-            _calculator.LT = 31.78d;
+            // Jerusalem: 31° 46′ North, 35° 14′ East
+            // Latitude: 31 + 46/60 = 31.766666...
+            // Longitude: 35 + 14/60 = 35.233333... (East is negative in this system)
+            _calculator.LG = -35.2333333333333d; // Longitude of Jerusalem (35° 14′ East)
+            _calculator.LT = 31.7666666666667d;   // Latitude of Jerusalem (31° 46′ North)
             _calculator.HR = 14;
             _calculator.GregorianYear = year;
             _calculator.InitializeVariables();
@@ -157,8 +160,9 @@ namespace BiblCalCore
 
         private JordanCrossingResult CalculateJordanForYear(double year)
         {
-            _calculator.LG = -35.244d;
-            _calculator.LT = 31.78d;
+            // Jerusalem: 31° 46′ North, 35° 14′ East
+            _calculator.LG = -35.2333333333333d; // Longitude of Jerusalem (35° 14′ East)
+            _calculator.LT = 31.7666666666667d;   // Latitude of Jerusalem (31° 46′ North)
             _calculator.HR = 14;
             _calculator.GregorianYear = year;
             _calculator.InitializeVariables();

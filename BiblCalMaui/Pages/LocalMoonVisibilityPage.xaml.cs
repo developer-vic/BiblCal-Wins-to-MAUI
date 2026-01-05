@@ -166,11 +166,10 @@ namespace BiblCalMaui.Pages
                 string longDir = LongDirPicker.SelectedItem?.ToString() ?? "E";
 
                 // Windows GetLocation: LG = Degrees(txtLongDeg, txtLongMin), LT = Degrees(txtLatDeg, txtLatMin)
-                // txtLatDeg shows DegLat (latitude field, but actually longitude value)
-                // txtLongDeg shows DegLon (longitude field, but actually latitude value)
+                // LG = Longitude (from txtLongDeg field), LT = Latitude (from txtLatDeg field)
                 // Convert to decimal (Degrees function, always positive)
-                double lg = ConvertFromDegreesMinutes(longDeg, longMin, longDir); // LG from txtLongDeg (DegLon = latitude)
-                double lt = ConvertFromDegreesMinutes(latDeg, latMin, latDir);   // LT from txtLatDeg (DegLat = longitude)
+                double lg = ConvertFromDegreesMinutes(longDeg, longMin, longDir); // LG from txtLongDeg (Longitude)
+                double lt = ConvertFromDegreesMinutes(latDeg, latMin, latDir);   // LT from txtLatDeg (Latitude)
 
                 // Apply directions (matching Windows GetLocation exactly):
                 // Windows GetLocation: if txtLonDir == "E": LG = -LG
@@ -186,11 +185,9 @@ namespace BiblCalMaui.Pages
                 }
                 // else latDir == "N", stays positive
 
-                // Now lg = latitude value, lt = longitude value (matching Windows GetLocation output)
-                // But Windows uses LG as latitude and LT as longitude in calculations
-                // So we pass: latitude = lg, longitude = lt
-                double latitude = lg;  // LG is latitude value
-                double longitude = lt; // LT is longitude value
+                // Windows GetLocation produces: LG = longitude value, LT = latitude value
+                double longitude = lg;  // LG is longitude value
+                double latitude = lt;   // LT is latitude value
 
                 // Get GMT offset
                 if (!double.TryParse(GMTOffsetEntry.Text, out double gmtOffset))
@@ -219,14 +216,11 @@ namespace BiblCalMaui.Pages
                 {
                     try
                     {
-                        // Windows GetLocation produces: LG = latitude value (from txtLongDeg), LT = longitude value (from txtLatDeg)
+                        // Windows GetLocation produces: LG = longitude value, LT = latitude value
                         // Function signature: CalculateLocalMoons(year, longitude, latitude, hr, locationName)
                         // Function sets: LG = longitude parameter, LT = latitude parameter
-                        // To match Windows: We need LG = latitude, LT = longitude
-                        // So: longitude parameter (goes to LG) = latitude value
-                        //     latitude parameter (goes to LT) = longitude value
-                        // Pass: (latitude_value, longitude_value) to match Windows GetLocation output
-                        _localMoonCalc.CalculateLocalMoons(year, latitude, longitude, hr, locationName);
+                        // Pass coordinates in correct order: longitude, latitude
+                        _localMoonCalc.CalculateLocalMoons(year, longitude, latitude, hr, locationName);
                     }
                     catch (Exception calcEx)
                     {

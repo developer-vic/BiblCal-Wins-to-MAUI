@@ -66,6 +66,7 @@ namespace BiblCalCore
         private double _dateOfFirstMonth = 0;
         private int _m0 = 0; // Month counter
         private double _startingMonth = 0; // Track starting month for current calculation
+        private bool _processingNotVisible = false; // Track if we're processing a "Not Visible" recursive call
 
         // Additional variables for calculations
         private double _a4 = 0, _a5 = 0, _a6 = 0, _a7 = 0, _a9 = 0;
@@ -294,10 +295,20 @@ namespace BiblCalCore
 
             // Check if we've moved to a different month (for local calculations)
             // If so, stop processing days for current month
+            // Exception: If we're processing a "Not Visible" recursive call, allow the first day of next month
+            // to be processed (this handles cases where a "Not Visible" day at month end leads to a visible day in next month)
             if (_startingMonth > 0 && Math.Abs(_m - _startingMonth) > 0.5)
             {
-                // Month changed, stop processing days for this month
-                return;
+                // Month changed
+                if (!_processingNotVisible)
+                {
+                    // Not in a recursive "Not Visible" call, stop processing days for this month
+                    return;
+                }
+                // We're in a recursive "Not Visible" call and month changed
+                // Allow processing this first day of next month, then stop
+                _processingNotVisible = false;
+                // Continue processing this day
             }
 
             // Print date (matching Windows - no explicit padding)
@@ -426,9 +437,18 @@ namespace BiblCalCore
                     _s11 = _s1;
                 }
 
-                if (_ho > 9)
+                // Format hour string correctly - ensure it's 1-2 digits
+                // Recalculate from _ho to ensure correct formatting
+                int hourInt = (int)_ho;
+                if (hourInt > 23)
                 {
-                    _hoString = _hoString.Substring(Math.Max(_hoString.Length - 2, 0));
+                    hourInt = hourInt % 24;
+                }
+                _hoString = hourInt.ToString();
+                // Pad single digit hours with space for alignment
+                if (hourInt < 10)
+                {
+                    _hoString = " " + _hoString;
                 }
                 if (_hq < 10)
                 {
@@ -519,7 +539,10 @@ namespace BiblCalCore
                     _mc = 0;
                     _outputWriter.WriteLine("  Not Visible");
                     // Matching Windows: recursively call FiftyTwoFifty to find next day
+                    // Set flag to allow processing first day of next month if needed
+                    _processingNotVisible = true;
                     FiftyTwoFifty();
+                    _processingNotVisible = false;
                     return;
                 }
                 if (_visibilityNumber > 88 && _visibilityNumber <= 100)
@@ -624,7 +647,13 @@ namespace BiblCalCore
                 _hl = _hs + _aj + _sj + 0.00833333333;
                 _hm = Math.Floor((_hl - Math.Floor(_hl)) * 60);
                 _ht = Math.Floor(_hl);
-                _htString = ((int)_ht).ToString();
+                // Format hour string correctly - ensure it's 1-2 digits
+                int hourIntSunset = (int)_ht;
+                if (hourIntSunset > 23)
+                {
+                    hourIntSunset = hourIntSunset % 24;
+                }
+                _htString = hourIntSunset.ToString();
                 _hmString = ((int)_hm).ToString();
                 if (_hmString.Length > 1)
                 {
@@ -635,7 +664,7 @@ namespace BiblCalCore
                 // Windows prints "   " (3 spaces) before sunset, but date might already have trailing space
                 // Actually, Windows date output doesn't have trailing space, so we need "   " (3 spaces)
                 _outputWriter.Write("   ");
-                if (_ht < 10)
+                if (hourIntSunset < 10)
                 {
                     _htString = " " + _htString;
                 }

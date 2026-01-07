@@ -20,7 +20,7 @@
 
        <VerticalStackLayout Padding="10"
                             Spacing="15"
-                            BackgroundColor="#c0c0ff">
+                            BackgroundColor="#00ffff">
 
               <!-- Year Input and Calculate Button, and Location on Same Row -->
               <Grid RowDefinitions="auto"
@@ -42,12 +42,44 @@
                                   WidthRequest="40"
                                   HeightRequest="40"
                                   BackgroundColor="Transparent"/>
-                     <Picker x:Name="LocationPicker"
-                             Grid.Row="0"
-                             Grid.Column="2"
-                             Title="Select a location or enter manually"
-                             ItemDisplayBinding="{Binding Name}"
-                             SelectedIndexChanged="OnLocationSelected"/>
+                     <Grid Grid.Row="0" Grid.Column="2" RowDefinitions="Auto,Auto,Auto">
+                            <Entry x:Name="LocationEntry"
+                                   Grid.Row="0"
+                                   Placeholder="Select or enter location name"
+                                   Completed="OnLocationEntryCompleted"
+                                   TextChanged="OnLocationEntryTextChanged"
+                                   Focused="OnLocationEntryFocused"
+                                   Unfocused="OnLocationEntryUnfocused"/>
+                            <Border x:Name="LocationDropdown"
+                                    Grid.Row="1"
+                                    StrokeThickness="1"
+                                    Stroke="Gray"
+                                    BackgroundColor="White"
+                                    IsVisible="False"
+                                    MaximumHeightRequest="200"
+                                    Margin="0,2,0,0">
+                                   <CollectionView x:Name="LocationDropdownList"
+                                                   SelectionMode="Single"
+                                                   SelectionChanged="OnLocationDropdownItemSelected"
+                                                   BackgroundColor="White">
+                                          <CollectionView.ItemTemplate>
+                                                 <DataTemplate>
+                                                        <Grid Padding="10,5">
+                                                               <Label Text="{Binding Name}"
+                                                                      FontSize="14"
+                                                                      TextColor="Black"
+                                                                      VerticalOptions="Center"/>
+                                                        </Grid>
+                                                 </DataTemplate>
+                                          </CollectionView.ItemTemplate>
+                                   </CollectionView>
+                            </Border>
+                            <Label Text="To edit, add or delete a location (Press ENTER after the location name)"
+                                   Grid.Row="2"
+                                   FontSize="10"
+                                   TextColor="Gray"
+                                   Margin="5,2,0,0"/>
+                     </Grid>
               </Grid>
 
               <!-- Latitude Inputs -->
@@ -143,7 +175,7 @@
                             <Label x:Name="ResultsLabel"
                                    Text="Results will appear here..."
                                    TextColor="Black"
-                                   FontSize="12"
+                                   FontSize="14"
                                    FontFamily="Courier"
                                    LineBreakMode="WordWrap"
                                    VerticalOptions="Start"

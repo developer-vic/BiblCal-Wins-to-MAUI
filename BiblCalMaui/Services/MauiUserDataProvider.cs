@@ -1,4 +1,6 @@
 using BiblCalCore;
+using System.Collections.Generic;
+using System.IO;
 
 namespace BiblCalMaui.Services
 {
@@ -10,12 +12,17 @@ namespace BiblCalMaui.Services
         private string _currentLocation = "Jerusalem, Israel";
         // Coordinates stored correctly: Latitude and Longitude match their actual geographic values
         // In this system, East longitudes are negative
-        private readonly LocationData[] _locations = new LocationData[]
+        private List<LocationData> _locations = new List<LocationData>();
+
+        private static LocationData[] GetDefaultLocations()
         {
+            return new LocationData[]
+            {
             // Jerusalem: 31° 46' N, 35° 14' E
             new LocationData { Name = "Jerusalem, Israel", Latitude = 31.7666666666667, Longitude = -35.2333333333333, GMTOffset = "2" },
             new LocationData { Name = "Lennon, Michigan, USA", Latitude = 42.95, Longitude = 83.95, GMTOffset = "4" },
             new LocationData { Name = "New York, New York, USA", Latitude = 40.7333333333333, Longitude = 73.9166666666667, GMTOffset = "5" },
+            new LocationData { Name = "Pittsburgh, PA, USA", Latitude = 40.6666666666667, Longitude = 79.9666666666667, GMTOffset = "5" },
             new LocationData { Name = "Chicago, Illinois, USA", Latitude = 41.85, Longitude = 87.65, GMTOffset = "6" },
             new LocationData { Name = "Houston, Texas, USA", Latitude = 29.75, Longitude = 95.3833333333333, GMTOffset = "6" },
             new LocationData { Name = "Los Angeles, California, USA", Latitude = 34.0833333333333, Longitude = 118.366666666667, GMTOffset = "8" },
@@ -45,7 +52,18 @@ namespace BiblCalMaui.Services
             new LocationData { Name = "Manila, Philippines", Latitude = 14.6166666666667, Longitude = -121, GMTOffset = "8" },
             new LocationData { Name = "Seoul, South Korea", Latitude = 37.5833333333333, Longitude = -127.05, GMTOffset = "9" },
             new LocationData { Name = "Tokyo, Japan", Latitude = 35.6833333333333, Longitude = -139.733333333333, GMTOffset = "9" }
-        };
+            };
+        }
+
+        public MauiUserDataProvider()
+        {
+            LoadUserData();
+            if (_locations.Count == 0)
+            {
+                // If no saved data, use defaults
+                _locations.AddRange(GetDefaultLocations());
+            }
+        }
 
         public string GetCurrentLocation()
         {
@@ -59,12 +77,12 @@ namespace BiblCalMaui.Services
 
         public int GetNumberOfLocations()
         {
-            return _locations.Length; // Return total count
+            return _locations.Count; // Return total count
         }
 
         public string GetLocationName(int index)
         {
-            if (index >= 0 && index < _locations.Length)
+            if (index >= 0 && index < _locations.Count)
             {
                 return _locations[index].Name;
             }
@@ -73,7 +91,7 @@ namespace BiblCalMaui.Services
 
         public double GetLocationLatitude(int index)
         {
-            if (index >= 0 && index < _locations.Length)
+            if (index >= 0 && index < _locations.Count)
             {
                 return _locations[index].Latitude;
             }
@@ -82,7 +100,7 @@ namespace BiblCalMaui.Services
 
         public double GetLocationLongitude(int index)
         {
-            if (index >= 0 && index < _locations.Length)
+            if (index >= 0 && index < _locations.Count)
             {
                 return _locations[index].Longitude;
             }
@@ -91,7 +109,7 @@ namespace BiblCalMaui.Services
 
         public string GetLocationGMTOffset(int index)
         {
-            if (index >= 0 && index < _locations.Length)
+            if (index >= 0 && index < _locations.Count)
             {
                 return _locations[index].GMTOffset;
             }
@@ -100,8 +118,161 @@ namespace BiblCalMaui.Services
 
         public void SaveUserData()
         {
-            // In a full implementation, this would save to platform-specific storage
-            // For now, it's a no-op
+            WriteUserDataXML();
+        }
+
+        // Additional methods for location management
+        public int FindLocationIndex(string locationName)
+        {
+            for (int i = 0; i < _locations.Count; i++)
+            {
+                if (_locations[i].Name == locationName)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public void AddLocation(string name, double latitude, double longitude, string gmtOffset)
+        {
+            if (_locations.Count >= 500)
+            {
+                throw new InvalidOperationException("Maximum number of locations (500) reached.");
+            }
+            _locations.Add(new LocationData
+            {
+                Name = name.Length > 40 ? name.Substring(0, 40) : name,
+                Latitude = latitude,
+                Longitude = longitude,
+                GMTOffset = gmtOffset
+            });
+            WriteUserDataXML();
+        }
+
+        public void UpdateLocation(int index, string name, double latitude, double longitude, string gmtOffset)
+        {
+            if (index >= 0 && index < _locations.Count)
+            {
+                _locations[index].Name = name.Length > 40 ? name.Substring(0, 40) : name;
+                _locations[index].Latitude = latitude;
+                _locations[index].Longitude = longitude;
+                _locations[index].GMTOffset = gmtOffset;
+                WriteUserDataXML();
+            }
+        }
+
+        public void DeleteLocation(int index)
+        {
+            if (index >= 0 && index < _locations.Count)
+            {
+                _locations.RemoveAt(index);
+                if (_locations.Count > 0)
+                {
+                    _currentLocation = _locations[0].Name;
+                }
+                WriteUserDataXML();
+            }
+        }
+
+        private void LoadUserData()
+        {
+            try
+            {
+                string filePath = GetUserDataFilePath();
+                if (File.Exists(filePath))
+                {
+                    using (var reader = new System.Xml.XmlTextReader(filePath))
+                    {
+                        _locations.Clear();
+                        while (reader.Read())
+                        {
+                            if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.Name == "Location")
+                            {
+                                string name = reader.GetAttribute("name") ?? "";
+                                string latStr = reader.GetAttribute("lat") ?? "0";
+                                string longStr = reader.GetAttribute("long") ?? "0";
+                                string gmt = reader.GetAttribute("gmt") ?? "0";
+                                string selected = reader.GetAttribute("selected") ?? "false";
+
+                                if (double.TryParse(latStr, out double lat) && double.TryParse(longStr, out double lon))
+                                {
+                                    _locations.Add(new LocationData
+                                    {
+                                        Name = name,
+                                        Latitude = lat,
+                                        Longitude = lon,
+                                        GMTOffset = gmt
+                                    });
+
+                                    if (selected == "true")
+                                    {
+                                        _currentLocation = name;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(_currentLocation) && _locations.Count > 0)
+                {
+                    _currentLocation = _locations[0].Name;
+                }
+            }
+            catch
+            {
+                // If loading fails, will use defaults in constructor
+            }
+        }
+
+        private void WriteUserDataXML()
+        {
+            try
+            {
+                string filePath = GetUserDataFilePath();
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                using (var writer = System.Xml.XmlWriter.Create(filePath, new System.Xml.XmlWriterSettings { Indent = true }))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("configuration");
+                    writer.WriteStartElement("Locations");
+                    writer.WriteWhitespace("\r\n");
+
+                    for (int i = 0; i < _locations.Count; i++)
+                    {
+                        bool isSelected = _locations[i].Name == _currentLocation;
+                        writer.WriteStartElement("Location");
+                        writer.WriteAttributeString("name", _locations[i].Name);
+                        writer.WriteAttributeString("lat", _locations[i].Latitude.ToString());
+                        writer.WriteAttributeString("long", _locations[i].Longitude.ToString());
+                        writer.WriteAttributeString("gmt", _locations[i].GMTOffset);
+                        writer.WriteAttributeString("selected", isSelected ? "true" : "false");
+                        writer.WriteEndElement();
+                        writer.WriteWhitespace("\r\n");
+                    }
+
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
+                }
+            }
+            catch
+            {
+                // Silently fail if save fails
+            }
+        }
+
+        private string GetUserDataFilePath()
+        {
+            // Use platform-specific storage
+            string basePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string appFolder = Path.Combine(basePath, "BiblCalMaui");
+            return Path.Combine(appFolder, "UserData.xml");
         }
 
         private class LocationData

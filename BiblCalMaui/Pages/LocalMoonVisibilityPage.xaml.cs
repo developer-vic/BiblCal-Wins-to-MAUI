@@ -11,6 +11,9 @@ namespace BiblCalMaui.Pages
         private readonly MauiOutputWriter _outputWriter;
         private readonly MauiUserDataProvider _userDataProvider;
         private readonly ObservableCollection<LocationItem> _locations;
+        private bool _changeFlag = false; // Track if coordinates have been changed
+        private string _lastLocationName = ""; // Track last selected location name
+        private bool _isSelectingFromDropdown = false; // Prevent text change events during dropdown selection
 
         public class LocationItem
         {
@@ -33,8 +36,13 @@ namespace BiblCalMaui.Pages
             // Initialize locations
             _locations = new ObservableCollection<LocationItem>();
             LoadLocations();
+            
+            // Set up CollectionView ItemsSource to show all locations
+            if (LocationDropdownList != null)
+            {
+                LocationDropdownList.ItemsSource = _locations;
+            }
 
-            LocationPicker.ItemsSource = _locations;
             LatDirPicker.SelectedIndex = 0; // Default to N
             LongDirPicker.SelectedIndex = 0; // Default to E
 
@@ -44,9 +52,19 @@ namespace BiblCalMaui.Pages
             // Set default location if available
             if (_locations.Count > 0)
             {
-                LocationPicker.SelectedItem = _locations[0];
-                OnLocationSelected(null, null);
+                LocationEntry.Text = _locations[0].Name;
+                _lastLocationName = _locations[0].Name;
+                SetupLocation(_locations[0]);
             }
+
+            // Track coordinate changes
+            LatDegEntry.TextChanged += OnCoordinateChanged;
+            LatMinEntry.TextChanged += OnCoordinateChanged;
+            LatDirPicker.SelectedIndexChanged += OnCoordinateChanged;
+            LongDegEntry.TextChanged += OnCoordinateChanged;
+            LongMinEntry.TextChanged += OnCoordinateChanged;
+            LongDirPicker.SelectedIndexChanged += OnCoordinateChanged;
+            GMTOffsetEntry.TextChanged += OnCoordinateChanged;
         }
 
         private void LoadLocations()
@@ -68,29 +86,289 @@ namespace BiblCalMaui.Pages
                     });
                 }
             }
+            
+            // Refresh CollectionView if dropdown is visible
+            if (LocationDropdownList != null && LocationDropdownList.ItemsSource != _locations)
+            {
+                LocationDropdownList.ItemsSource = _locations;
+            }
         }
 
-        private void OnLocationSelected(object? sender, EventArgs? e)
+        private void SetupLocation(LocationItem selectedLocation)
         {
-            if (LocationPicker.SelectedItem is LocationItem selectedLocation)
+            // Temporarily disable change tracking
+            bool wasTracking = _changeFlag;
+            _changeFlag = false;
+
+            // Windows app UI: txtLatDeg shows DegLat (latitude), txtLongDeg shows DegLon (longitude)
+            var (latDeg, latMin) = ConvertToDegreesMinutes(Math.Abs(selectedLocation.Latitude));
+            var (longDeg, longMin) = ConvertToDegreesMinutes(Math.Abs(selectedLocation.Longitude));
+
+            LatDegEntry.Text = latDeg.ToString();
+            LatMinEntry.Text = latMin.ToString();
+            LatDirPicker.SelectedIndex = selectedLocation.Latitude >= 0 ? 0 : 1; // 0 = N, 1 = S
+
+            LongDegEntry.Text = longDeg.ToString();
+            LongMinEntry.Text = longMin.ToString();
+            LongDirPicker.SelectedIndex = selectedLocation.Longitude < 0 ? 0 : 1; // 0 = E, 1 = W
+
+            GMTOffsetEntry.Text = selectedLocation.GMTOffset;
+
+            // Restore change tracking
+            _changeFlag = wasTracking;
+        }
+
+        private void OnCoordinateChanged(object? sender, EventArgs? e)
+        {
+            _changeFlag = true;
+        }
+
+        private void OnLocationEntryTextChanged(object? sender, TextChangedEventArgs e)
+        {
+            if (_isSelectingFromDropdown)
             {
-                // Windows app UI: txtLatDeg shows DegLat (latitude), txtLongDeg shows DegLon (longitude)
-                // But the UI labels are confusing - we match Windows exactly:
-                // LatDegEntry shows latitude, LongDegEntry shows longitude
-                var (latDeg, latMin) = ConvertToDegreesMinutes(Math.Abs(selectedLocation.Latitude)); // Show latitude in Lat field
-                var (longDeg, longMin) = ConvertToDegreesMinutes(Math.Abs(selectedLocation.Longitude)); // Show longitude in Long field
+                return; // Don't process while selecting from dropdown
+            }
 
-                LatDegEntry.Text = latDeg.ToString();
-                LatMinEntry.Text = latMin.ToString();
-                // Windows: txtLatDir = "N" if DegLat >= 0, "S" if DegLat < 0
-                LatDirPicker.SelectedIndex = selectedLocation.Latitude >= 0 ? 0 : 1; // 0 = N, 1 = S
+            // Limit to 40 characters like Windows app
+            if (e.NewTextValue != null && e.NewTextValue.Length > 40)
+            {
+                LocationEntry.Text = e.NewTextValue.Substring(0, 40);
+            }
+        }
 
-                LongDegEntry.Text = longDeg.ToString();
-                LongMinEntry.Text = longMin.ToString();
-                // Windows: txtLonDir = "E" if DegLon < 0, "W" if DegLon >= 0
-                LongDirPicker.SelectedIndex = selectedLocation.Longitude < 0 ? 0 : 1; // 0 = E, 1 = W
+        private void OnLocationEntryFocused(object? sender, FocusEventArgs e)
+        {
+            try
+            {
+                // Show dropdown with all locations when entry is focused
+                if (LocationEntry != null && LocationDropdown != null && LocationDropdownList != null)
+                {
+                    // Ensure ItemsSource is set to show all locations
+                    if (LocationDropdownList.ItemsSource == null)
+                    {
+                        LocationDropdownList.ItemsSource = _locations;
+                    }
+                    else if (LocationDropdownList.ItemsSource != _locations)
+                    {
+                        LocationDropdownList.ItemsSource = _locations;
+                    }
+                    
+                    // Show the dropdown
+                    LocationDropdown.IsVisible = _locations.Count > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in OnLocationEntryFocused: {ex.Message}");
+            }
+        }
 
-                GMTOffsetEntry.Text = selectedLocation.GMTOffset;
+        private void OnLocationEntryUnfocused(object? sender, FocusEventArgs e)
+        {
+            // Hide dropdown when entry loses focus (with small delay to allow item selection)
+            if (LocationEntry != null && LocationDropdown != null)
+            {
+                Task.Delay(200).ContinueWith(_ =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        if (LocationEntry != null && LocationDropdown != null && !LocationEntry.IsFocused)
+                        {
+                            LocationDropdown.IsVisible = false;
+                        }
+                    });
+                });
+            }
+        }
+
+        private void OnLocationDropdownItemSelected(object? sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (e.CurrentSelection != null && e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is LocationItem selectedLocation)
+                {
+                    _isSelectingFromDropdown = true;
+                    
+                    // Set the location name in the entry
+                    if (LocationEntry != null)
+                    {
+                        LocationEntry.Text = selectedLocation.Name;
+                    }
+                    _lastLocationName = selectedLocation.Name;
+                    
+                    // Load the location coordinates
+                    SetupLocation(selectedLocation);
+                    
+                    // Hide dropdown
+                    if (LocationDropdown != null)
+                    {
+                        LocationDropdown.IsVisible = false;
+                    }
+                    if (LocationEntry != null)
+                    {
+                        LocationEntry.Unfocus();
+                    }
+                    
+                    _isSelectingFromDropdown = false;
+                    
+                    // Clear selection to allow re-selecting the same item
+                    if (LocationDropdownList != null)
+                    {
+                        LocationDropdownList.SelectedItem = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in OnLocationDropdownItemSelected: {ex.Message}");
+                _isSelectingFromDropdown = false;
+            }
+        }
+
+        private async void OnLocationEntryCompleted(object? sender, EventArgs e)
+        {
+            // Hide dropdown when ENTER is pressed
+            if (LocationDropdown != null)
+            {
+                LocationDropdown.IsVisible = false;
+            }
+            await AddEditDeleteLocation();
+        }
+
+        private async Task AddEditDeleteLocation()
+        {
+            string locationName = LocationEntry.Text?.Trim() ?? "";
+            if (string.IsNullOrEmpty(locationName))
+            {
+                return;
+            }
+
+            // Limit to 40 characters
+            if (locationName.Length > 40)
+            {
+                locationName = locationName.Substring(0, 40);
+                LocationEntry.Text = locationName;
+            }
+
+            // Find location in list
+            int index = _userDataProvider.FindLocationIndex(locationName);
+            bool found = index >= 0;
+
+            if (!found)
+            {
+                // Location not found - ask to add
+                bool add = await DisplayAlert("Add Location", 
+                    "Do you wish to add this location?\nSelecting [Yes] will add the location to the list.", 
+                    "Yes", "No");
+                
+                if (add)
+                {
+                    try
+                    {
+                        // Get coordinates from UI
+                        if (!int.TryParse(LatDegEntry.Text, out int latDeg) ||
+                            !int.TryParse(LatMinEntry.Text, out int latMin) ||
+                            !int.TryParse(LongDegEntry.Text, out int longDeg) ||
+                            !int.TryParse(LongMinEntry.Text, out int longMin))
+                        {
+                            await DisplayAlert("Error", "Please enter valid coordinates before adding a location.", "OK");
+                            return;
+                        }
+
+                        string latDir = LatDirPicker.SelectedItem?.ToString() ?? "N";
+                        string longDir = LongDirPicker.SelectedItem?.ToString() ?? "E";
+                        string gmt = GMTOffsetEntry.Text ?? "0";
+
+                        // Convert to decimal degrees (matching Windows Degrees function)
+                        double latitude = ConvertFromDegreesMinutes(latDeg, latMin, latDir);
+                        if (latDir == "S") latitude = -latitude;
+
+                        double longitude = ConvertFromDegreesMinutes(longDeg, longMin, longDir);
+                        if (longDir == "E") longitude = -longitude;
+
+                        _userDataProvider.AddLocation(locationName, latitude, longitude, gmt);
+                        LoadLocations();
+                        _userDataProvider.SetCurrentLocation(locationName);
+                        _lastLocationName = locationName;
+                        _changeFlag = false;
+                        await DisplayAlert("Success", "Location added successfully.", "OK");
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlert("Error", ex.Message, "OK");
+                    }
+                }
+            }
+            else
+            {
+                if (_changeFlag)
+                {
+                    // Location found and coordinates changed - ask to edit
+                    bool edit = await DisplayAlert("Edit Location", 
+                        "Do you wish to edit this location?\nSelecting [Yes] will change the location information.", 
+                        "Yes", "No");
+                    
+                    if (edit)
+                    {
+                        // Get coordinates from UI
+                        if (!int.TryParse(LatDegEntry.Text, out int latDeg) ||
+                            !int.TryParse(LatMinEntry.Text, out int latMin) ||
+                            !int.TryParse(LongDegEntry.Text, out int longDeg) ||
+                            !int.TryParse(LongMinEntry.Text, out int longMin))
+                        {
+                            await DisplayAlert("Error", "Please enter valid coordinates.", "OK");
+                            return;
+                        }
+
+                        string latDir = LatDirPicker.SelectedItem?.ToString() ?? "N";
+                        string longDir = LongDirPicker.SelectedItem?.ToString() ?? "E";
+                        string gmt = GMTOffsetEntry.Text ?? "0";
+
+                        // Convert to decimal degrees
+                        double latitude = ConvertFromDegreesMinutes(latDeg, latMin, latDir);
+                        if (latDir == "S") latitude = -latitude;
+
+                        double longitude = ConvertFromDegreesMinutes(longDeg, longMin, longDir);
+                        if (longDir == "E") longitude = -longitude;
+
+                        _userDataProvider.UpdateLocation(index, locationName, latitude, longitude, gmt);
+                        LoadLocations();
+                        _userDataProvider.SetCurrentLocation(locationName);
+                        _lastLocationName = locationName;
+                        _changeFlag = false;
+                        await DisplayAlert("Success", "Location updated successfully.", "OK");
+                    }
+                    else
+                    {
+                        _changeFlag = false;
+                    }
+                }
+                else
+                {
+                    // Location found and no changes - ask to delete
+                    bool delete = await DisplayAlert("Delete Location", 
+                        "Do you wish to delete this location?", 
+                        "Yes", "No");
+                    
+                    if (delete)
+                    {
+                        _userDataProvider.DeleteLocation(index);
+                        LoadLocations();
+                        if (_locations.Count > 0)
+                        {
+                            LocationEntry.Text = _locations[0].Name;
+                            _lastLocationName = _locations[0].Name;
+                            SetupLocation(_locations[0]);
+                        }
+                        else
+                        {
+                            LocationEntry.Text = "";
+                            _lastLocationName = "";
+                        }
+                        await DisplayAlert("Success", "Location deleted successfully.", "OK");
+                    }
+                }
             }
         }
 
@@ -209,7 +487,7 @@ namespace BiblCalMaui.Pages
                 }
 
                 // Calculate local moons using the calculation class (run on background thread)
-                string locationName = LocationPicker.SelectedItem is LocationItem loc ? loc.Name : "Custom Location";
+                string locationName = LocationEntry.Text?.Trim() ?? "Custom Location";
 
                 // Run calculation on background thread to prevent UI blocking
                 await Task.Run(() =>

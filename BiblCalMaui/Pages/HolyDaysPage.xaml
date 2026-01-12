@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BiblCalMaui.Pages.HolyDaysPage"
+             Title="Holy Days">
+
+       <!--Give all Entry and CheckBox background white-->
+       <ContentPage.Resources>
+              <ResourceDictionary>
+                     <Style TargetType="Entry">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+                     <Style TargetType="CheckBox">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+              </ResourceDictionary>
+       </ContentPage.Resources>
+
+       <Grid Padding="10" BackgroundColor="#00ffff">
+              <Grid.RowDefinitions>
+                     <RowDefinition Height="Auto"/>
+                     <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+
+              <!-- Year Input, Calculate Buttons, EJW Checkbox, and Label -->
+              <Grid Grid.Row="0" RowDefinitions="auto" ColumnDefinitions="auto,auto,auto,*,*" ColumnSpacing="5" RowSpacing="10">
+                     <Entry x:Name="YearEntry"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Placeholder="Year"
+                            Keyboard="Numeric"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            Completed="OnYearEntryCompleted"/>
+                     <ImageButton x:Name="CalculateHolyDaysButton"
+                                  Source="holy_days.png"
+                                  Clicked="OnCalculateHolyDaysClicked"
+                                  Grid.Row="0"
+                                  Grid.Column="1"
+                                  WidthRequest="40"
+                                  HeightRequest="40"
+                                  BackgroundColor="Transparent"/>
+                     <ImageButton x:Name="CalculateMonthsButton"
+                                  Source="local_moon.png"
+                                  Clicked="OnCalculateMonthsClicked"
+                                  Grid.Row="0"
+                                  Grid.Column="2"
+                                  WidthRequest="40"
+                                  HeightRequest="40"
+                                  BackgroundColor="Transparent"/>
+                     <CheckBox x:Name="EJWCheckBox"
+                               Grid.Row="0"
+                               Grid.Column="3"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               CheckedChanged="OnEJWCheckBoxChanged"/>
+                     <Label Text="East of Jerusalem / West of International Date Line"
+                            Grid.Row="0"
+                            Grid.Column="4"
+                            VerticalOptions="Center"
+                            FontSize="14"/>
+              </Grid>
+
+              <!-- Results -->
+              <Border Grid.Row="1"
+                      StrokeThickness="3"
+                      Stroke="LightGray"
+                      BackgroundColor="White"
+                      Padding="5"
+                      Margin="0,15,0,0">
+                     <ScrollView HeightRequest="700"
+                                 Orientation="Vertical">
+                            <Label x:Name="ResultsLabel"
+                                   Text="Results will appear here..."
+                                   TextColor="Black"
+                                   FontSize="16"
+                                   FontFamily="Courier"
+                                   LineBreakMode="WordWrap"
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Start"/>
+                     </ScrollView>
+              </Border>
+
+       </Grid>
+
+</ContentPage>

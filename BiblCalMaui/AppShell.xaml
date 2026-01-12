@@ -16,5 +16,10 @@
         Title="Local Moon Visibility"
         ContentTemplate="{DataTemplate pages:LocalMoonVisibilityPage}"
         Route="LocalMoonVisibilityPage" />
+    
+    <ShellContent
+        Title="Holy Days"
+        ContentTemplate="{DataTemplate pages:HolyDaysPage}"
+        Route="HolyDaysPage" />
 
 </Shell>

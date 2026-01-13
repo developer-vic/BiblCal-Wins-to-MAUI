@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<Locations>
+		<Location name="Jerusalem, Israel" long="31.7833333333333" lat="-35.2166666666667" gmt="2" selected="true"/>
+		<Location name="Lennon, Michigan, USA" long="83.95" lat="42.95" gmt="-4" selected="false"/>
+		<Location name="New York, New York, USA" long="73.9166666666667" lat="40.7333333333333" gmt="-5" selected="false"/>
+		<Location name="Chicago, Illinois, USA" long="87.65" lat="41.85" gmt="-6" selected="false"/>
+		<Location name="Houston, Texas, USA" long="95.3833333333333" lat="29.75" gmt="-6" selected="false"/>
+		<Location name="Los Angeles, California, USA" long="118.366666666667" lat="34.0833333333333" gmt="-8" selected="false"/>
+		<Location name="Honolulu, Hawaii, USA" long="157.833333333333" lat="21.3166666666667" gmt="-10" selected="false"/>
+		<Location name="Perth, Australia" long="-115.816666666667" lat="-31.9666666666667" gmt="8" selected="false"/>
+		<Location name="Melbourne, Australia" long="-144.97" lat="-37.82" gmt="10" selected="false"/>
+		<Location name="Brisbane, Australia" long="-153" lat="27.5" gmt="10" selected="false"/>
+		<Location name="Sydney, Australia" long="-151.283333333333" lat="-33.9166666666667" gmt="10" selected="false"/>
+		<Location name="Ottawa, Ontario, Canada" long="75.7166666666667" lat="45.4166666666667" gmt="-5" selected="false"/>
+		<Location name="Vancouver, Canada" long="123.1" lat="49.2166666666667" gmt="-8" selected="false"/>
+		<Location name="Greenwich Observatory, England" long="0" lat="51.4666666666667" gmt="0" selected="false"/>
+		<Location name="Berlin, Germany" long="-13.0166666666667" lat="52.5" gmt="1" selected="false"/>
+		<Location name="Kinshasa, Congo Dem.Rep." long="-15.3" lat="-4.3" gmt="1" selected="false"/>
+		<Location name="Paris, France" long="-2.33333333333333" lat="48.85" gmt="1" selected="false"/>
+		<Location name="Rome, Italy" long="-12.6166666666667" lat="41.8666666666667" gmt="1" selected="false"/>
+		<Location name="StockHolm, Sweden" long="-18.05" lat="59.03" gmt="1" selected="false"/>
+		<Location name="Cairo, Egypt" long="-31.2833333333333" lat="30" gmt="2" selected="false"/>
+		<Location name="Johannesburg, South Africa" long="-28.0799972222222" lat="-26.1999972222222" gmt="2" selected="false"/>
+		<Location name="Moscow, Russia" long="-37.6166666666667" lat="55.75" gmt="3" selected="false"/>
+		<Location name="Rio de Janeiro, Brazil" long="42.7166666666667" lat="-22.45" gmt="-3" selected="false"/>
+		<Location name="Lima, Lima, Peru" long="76.9166666666667" lat="-12.1" gmt="-5" selected="false"/>
+		<Location name="Bombay, India" long="-72.85" lat="18.9333333333333" gmt="5.5" selected="false"/>
+		<Location name="Calcutta, India" long="-88.3666666666667" lat="22.5166666666667" gmt="5.5" selected="false"/>
+		<Location name="Mexico City, Mexico" long="99.15" lat="19.4666666666667" gmt="-6" selected="false"/>
+		<Location name="Jakarta, Java, Indonesia" long="-106.75" lat="-6.13333333333333" gmt="7" selected="false"/>
+		<Location name="Beijing, China" long="-116.383333333333" lat="39.9166666666667" gmt="8" selected="false"/>
+		<Location name="Manila, Philippines" long="-121" lat="14.6166666666667" gmt="8" selected="false"/>
+		<Location name="Seoul, South Korea" long="-127.05" lat="37.5833333333333" gmt="9" selected="false"/>
+		<Location name="Tokyo, Japan" long="-139.733333333333" lat="35.6833333333333" gmt="9" selected="false"/>
+	</Locations>
+</configuration>

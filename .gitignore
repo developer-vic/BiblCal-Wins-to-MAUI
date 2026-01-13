@@ -4,10 +4,6 @@
 bin/
 obj/
 
-# Ignore BiblCal-master folder
-BiblCal-master/
-BiblCal-master/**
-
 # Ignore all .txt files
 *.txt
 

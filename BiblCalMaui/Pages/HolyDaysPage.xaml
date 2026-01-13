@@ -21,6 +21,8 @@
        <Grid Padding="10" BackgroundColor="#00ffff">
               <Grid.RowDefinitions>
                      <RowDefinition Height="Auto"/>
+                     <RowDefinition Height="Auto"/>
+                     <RowDefinition Height="Auto"/>
                      <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
 
@@ -63,8 +65,170 @@
                             FontSize="14"/>
               </Grid>
 
+              <!-- Location Selector -->
+              <Grid Grid.Row="1" RowDefinitions="auto" ColumnDefinitions="auto,auto,auto,*" ColumnSpacing="10" Margin="0,10,0,0">
+                     <Label Text="Location:"
+                            Grid.Column="0"
+                            VerticalOptions="Center"
+                            FontSize="14"/>
+                     <RadioButton x:Name="JerusalemRadioButton"
+                                  Grid.Column="1"
+                                  VerticalOptions="Center"
+                                  IsChecked="True"
+                                  CheckedChanged="OnLocationRadioButtonChanged">
+                            <RadioButton.Content>
+                                   <Label Text="Jerusalem (default)" VerticalOptions="Center"/>
+                            </RadioButton.Content>
+                     </RadioButton>
+                     <RadioButton x:Name="CustomLocationRadioButton"
+                                  Grid.Column="2"
+                                  VerticalOptions="Center"
+                                  CheckedChanged="OnLocationRadioButtonChanged">
+                            <RadioButton.Content>
+                                   <Label Text="Custom Location" VerticalOptions="Center"/>
+                            </RadioButton.Content>
+                     </RadioButton>
+              </Grid>
+
+              <!-- Custom Location Inputs (hidden by default) -->
+              <Grid x:Name="CustomLocationGrid"
+                    Grid.Row="2"
+                    RowDefinitions="auto,auto"
+                    IsVisible="False"
+                    Margin="0,10,0,0">
+                     <!-- Location Entry -->
+                     <Grid Grid.Row="0" RowDefinitions="Auto,Auto" ColumnSpacing="5">
+                            <Entry x:Name="LocationEntry"
+                                   Grid.Row="0"
+                                   Placeholder="Select or enter location name"
+                                   Completed="OnLocationEntryCompleted"
+                                   TextChanged="OnLocationEntryTextChanged"
+                                   Focused="OnLocationEntryFocused"
+                                   Unfocused="OnLocationEntryUnfocused"/>
+                            <Label Text="To edit, add or delete a location (Press ENTER after the location name)"
+                                   Grid.Row="1"
+                                   FontSize="10"
+                                   TextColor="Gray"
+                                   Margin="5,2,0,0"/>
+                     </Grid>
+                     
+                     <!-- Overlay Dropdown - positioned absolutely to overlay other controls -->
+                     <Border x:Name="LocationDropdown"
+                             Grid.Row="0"
+                             Grid.RowSpan="3"
+                             StrokeThickness="1"
+                             Stroke="Gray"
+                             BackgroundColor="White"
+                             IsVisible="False"
+                             MaximumHeightRequest="200"
+                             ZIndex="1000"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Start"
+                             Margin="120,40,0,0">
+                            <CollectionView x:Name="LocationDropdownList"
+                                            SelectionMode="Single"
+                                            SelectionChanged="OnLocationDropdownItemSelected"
+                                            BackgroundColor="White">
+                                   <CollectionView.ItemTemplate>
+                                          <DataTemplate>
+                                                 <Grid Padding="10,5">
+                                                        <Label Text="{Binding Name}"
+                                                               FontSize="14"
+                                                               TextColor="Black"
+                                                               VerticalOptions="Center"/>
+                                                 </Grid>
+                                          </DataTemplate>
+                                   </CollectionView.ItemTemplate>
+                            </CollectionView>
+                     </Border>
+
+                     <!-- Coordinate Inputs -->
+                     <Grid Grid.Row="1" ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
+                           ColumnSpacing="5"
+                           RowDefinitions="Auto,Auto"
+                           Margin="0,15,0,0">
+                            <!-- Latitude -->
+                            <Entry x:Name="LatDegEntry"
+                                   Placeholder="Deg"
+                                   Keyboard="Numeric"
+                                   Grid.Column="0"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"/>
+                            <Entry x:Name="LatMinEntry"
+                                   Placeholder="Min"
+                                   Keyboard="Numeric"
+                                   Grid.Column="1"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"/>
+                            <Picker x:Name="LatDirPicker"
+                                   Grid.Column="2"
+                                   VerticalOptions="Center">
+                                   <Picker.ItemsSource>
+                                          <x:Array Type="{x:Type x:String}">
+                                                 <x:String>N</x:String>
+                                                 <x:String>S</x:String>
+                                          </x:Array>
+                                   </Picker.ItemsSource>
+                            </Picker>
+                            <!-- Spacing -->
+                            <BoxView Grid.Column="3"
+                                     BackgroundColor="Transparent"
+                                     WidthRequest="10"/>
+                            <!-- Longitude -->
+                            <Entry x:Name="LongDegEntry"
+                                   Placeholder="Deg"
+                                   Keyboard="Numeric"
+                                   Grid.Column="4"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"/>
+                            <Entry x:Name="LongMinEntry"
+                                   Placeholder="Min"
+                                   Keyboard="Numeric"
+                                   Grid.Column="5"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"/>
+                            <Picker x:Name="LongDirPicker"
+                                   Grid.Column="6"
+                                   VerticalOptions="Center">
+                                   <Picker.ItemsSource>
+                                          <x:Array Type="{x:Type x:String}">
+                                                 <x:String>E</x:String>
+                                                 <x:String>W</x:String>
+                                          </x:Array>
+                                   </Picker.ItemsSource>
+                            </Picker>
+                            <!-- Spacing -->
+                            <BoxView Grid.Column="7"
+                                     BackgroundColor="Transparent"
+                                     WidthRequest="10"/>
+                            <!-- GMT Offset -->
+                            <Entry x:Name="GMTOffsetEntry"
+                                   Grid.Column="8"
+                                   Placeholder="2"
+                                   Keyboard="Numeric"
+                                   Grid.Row="0"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"/>
+                            <!-- Labels -->
+                            <Label Text="Latitude"
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="3"
+                                   VerticalOptions="Center"/>
+                            <Label Text="Longitude"
+                                   Grid.Row="1"
+                                   Grid.Column="4"
+                                   Grid.ColumnSpan="3"
+                                   VerticalOptions="Center"/>
+                            <Label Text="UTC/GMT"
+                                   Grid.Row="1"
+                                   Grid.Column="8"
+                                   VerticalOptions="Center"/>
+                     </Grid>
+              </Grid>
+
               <!-- Results -->
-              <Border Grid.Row="1"
+              <Border Grid.Row="3"
                       StrokeThickness="3"
                       Stroke="LightGray"
                       BackgroundColor="White"

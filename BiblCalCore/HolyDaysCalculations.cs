@@ -123,6 +123,7 @@ namespace BiblCalCore
         private string _visibilityNumberString = "";
 
         // Jerusalem coordinates (matching Windows InitializeVariables lines 1318-1320)
+        // Used as default when no location is specified
         private const double JERUSALEM_LAT = 31.78;
         private const double JERUSALEM_LON = -35.244; // Negative for East longitude
         private const double JERUSALEM_HR = 14; // GMT+2
@@ -133,7 +134,7 @@ namespace BiblCalCore
             _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
         }
 
-        public void CalculateHolyDays(double gregorianYear, string ejwString = "")
+        public void CalculateHolyDays(double gregorianYear, string ejwString = "", double? latitude = null, double? longitude = null, double? utcOffset = null, string locationName = "")
         {
             // Matching Windows CalcHolyDays (lines 243-485)
             _ejwString = ejwString ?? "";
@@ -141,13 +142,34 @@ namespace BiblCalCore
             // Initialize variables
             InitializeVariables();
 
-            // Set Jerusalem coordinates (in degrees) - matching Windows InitializeVariables lines 1318-1320
+            // Set coordinates - use provided location or default to Jerusalem
             // Note: Windows uses negative longitude (LG = -35.244d), we store it as-is in _lg
-            _lg = JERUSALEM_LON; // Keep negative for East longitude
-            _lt = JERUSALEM_LAT;
-            _hr = JERUSALEM_HR;
+            if (latitude.HasValue && longitude.HasValue && utcOffset.HasValue)
+            {
+                _lg = longitude.Value; // Keep negative for East longitude
+                _lt = latitude.Value;
+                // Convert UTC offset to HR format (12 + offset for East, 12 - offset for West)
+                // For East longitudes (negative), use 12 + offset
+                // For West longitudes (positive), use 12 - offset
+                double gmtValue = Math.Abs(utcOffset.Value);
+                if (longitude.Value < 0) // East
+                {
+                    _hr = 12 + gmtValue;
+                }
+                else // West
+                {
+                    _hr = 12 - gmtValue;
+                }
+            }
+            else
+            {
+                // Default to Jerusalem coordinates
+                _lg = JERUSALEM_LON;
+                _lt = JERUSALEM_LAT;
+                _hr = JERUSALEM_HR;
+            }
             
-            // Initialize calculator with Jerusalem coordinates
+            // Initialize calculator with coordinates
             InitializeCalculationVariables();
 
             // Calculate Year After Creation
@@ -160,17 +182,31 @@ namespace BiblCalCore
                 _yearAfterCreation = gregorianYear + 4004; // CE is 4004
             }
 
-            // Print header based on EJW setting
-            if (_ejwString == "Y")
+            // Print header based on location and EJW setting
+            if (!string.IsNullOrEmpty(locationName) && locationName != "Jerusalem")
             {
-                _outputWriter.WriteLine("These Holy Day dates are corrected (delayed one day) for the");
-                _outputWriter.WriteLine("region east of Israel and west of the International Date Line.");
+                _outputWriter.WriteLine($"These Holy Day dates are calculated for {locationName}.");
+                if (_ejwString == "Y")
+                {
+                    _outputWriter.WriteLine("Dates are corrected (delayed one day) for the");
+                    _outputWriter.WriteLine("region east of Israel and west of the International Date Line.");
+                }
                 _outputWriter.WriteLine("");
             }
             else
             {
-                _outputWriter.WriteLine("These Holy Day dates are for Israel and regions westward to the International Date Line.");
-                _outputWriter.WriteLine("");
+                // Default Jerusalem header
+                if (_ejwString == "Y")
+                {
+                    _outputWriter.WriteLine("These Holy Day dates are corrected (delayed one day) for the");
+                    _outputWriter.WriteLine("region east of Israel and west of the International Date Line.");
+                    _outputWriter.WriteLine("");
+                }
+                else
+                {
+                    _outputWriter.WriteLine("These Holy Day dates are for Israel and regions westward to the International Date Line.");
+                    _outputWriter.WriteLine("");
+                }
             }
 
             _outputWriter.WriteLine($"This may be Year {FormatNumber(_yearAfterCreation)} After Creation. ");
@@ -183,7 +219,7 @@ namespace BiblCalCore
             CalculateYearHolyDays(gregorianYear);
         }
 
-        public void CalculateNewMoons(double gregorianYear, string ejwString = "")
+        public void CalculateNewMoons(double gregorianYear, string ejwString = "", double? latitude = null, double? longitude = null, double? utcOffset = null, string locationName = "")
         {
             // Matching Windows CalcNewMoons (lines 488-550)
             _ejwString = ejwString ?? "";
@@ -191,17 +227,43 @@ namespace BiblCalCore
             // Initialize variables
             InitializeVariables();
 
-            // Set Jerusalem coordinates (in degrees) - matching Windows InitializeVariables lines 1318-1320
-            _lg = JERUSALEM_LON; // Keep negative for East longitude
-            _lt = JERUSALEM_LAT;
-            _hr = JERUSALEM_HR;
+            // Set coordinates - use provided location or default to Jerusalem
+            if (latitude.HasValue && longitude.HasValue && utcOffset.HasValue)
+            {
+                _lg = longitude.Value; // Keep negative for East longitude
+                _lt = latitude.Value;
+                // Convert UTC offset to HR format
+                double gmtValue = Math.Abs(utcOffset.Value);
+                if (longitude.Value < 0) // East
+                {
+                    _hr = 12 + gmtValue;
+                }
+                else // West
+                {
+                    _hr = 12 - gmtValue;
+                }
+            }
+            else
+            {
+                // Default to Jerusalem coordinates
+                _lg = JERUSALEM_LON;
+                _lt = JERUSALEM_LAT;
+                _hr = JERUSALEM_HR;
+            }
             
-            // Initialize calculator with Jerusalem coordinates
+            // Initialize calculator with coordinates
             InitializeCalculationVariables();
 
             // Print header (matching Windows CalcNewMoons lines 495-511)
             _outputWriter.WriteLine($"{FormatYear(gregorianYear)} CALCULATED NEW MOONS");
-            _outputWriter.WriteLine("(Jerusalem)");
+            if (!string.IsNullOrEmpty(locationName) && locationName != "Jerusalem")
+            {
+                _outputWriter.WriteLine($"({locationName})");
+            }
+            else
+            {
+                _outputWriter.WriteLine("(Jerusalem)");
+            }
             if (_ejwString == "Y")
             {
                 _outputWriter.WriteLine("The Month Start dates are corrected (delayed one day)");
@@ -233,17 +295,17 @@ namespace BiblCalCore
                 // Print First Day of the Month (matching Windows CalcNewMoons lines 526-543)
                 if (_vs == 2)
                 {
-                    _outputWriter.Write("First Day of the Month is (possibly one day later)");
+                    _outputWriter.Write("First Day of the Month is (possibly one day later) ");
                 }
                 else
                 {
                     if (_vs == 3)
                     {
-                        _outputWriter.Write("First Day of the Month is");
+                        _outputWriter.Write("First Day of the Month is ");
                     }
                     else
                     {
-                        _outputWriter.Write("First Day of the Month is (possibly one day earlier)");
+                        _outputWriter.Write("First Day of the Month is (possibly one day earlier) ");
                     }
                 }
                 PrintDayAndDate();

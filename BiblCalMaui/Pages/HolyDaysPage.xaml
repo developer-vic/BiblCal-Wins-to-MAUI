@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BiblCalMaui.Pages.HolyDaysPage"
-             Title="Holy Days">
+             Title="HOLY DAYS / NEW MOONS - www.chcpublications.net">
 
-       <!--Give all Entry and CheckBox background white-->
+       <!--Give all Entry and CheckBox background RadioButton white-->
        <ContentPage.Resources>
               <ResourceDictionary>
                      <Style TargetType="Entry">
@@ -15,10 +15,19 @@
                             <Setter Property="BackgroundColor"
                                     Value="White"/>
                      </Style>
+                     <Style TargetType="RadioButton">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+                     <Style TargetType="Label">
+                            <Setter Property="TextColor"
+                                    Value="White"/>
+                     </Style>
               </ResourceDictionary>
        </ContentPage.Resources>
 
-       <Grid Padding="10" BackgroundColor="#00ffff">
+       <Grid Padding="10"
+             BackgroundColor="#010080">
               <Grid.RowDefinitions>
                      <RowDefinition Height="Auto"/>
                      <RowDefinition Height="Auto"/>
@@ -27,7 +36,11 @@
               </Grid.RowDefinitions>
 
               <!-- Year Input, Calculate Buttons, EJW Checkbox, and Label -->
-              <Grid Grid.Row="0" RowDefinitions="auto" ColumnDefinitions="auto,auto,auto,*,*" ColumnSpacing="5" RowSpacing="10">
+              <Grid Grid.Row="0"
+                    RowDefinitions="auto"
+                    ColumnDefinitions="auto,auto,auto,*,*"
+                    ColumnSpacing="5"
+                    RowSpacing="10">
                      <Entry x:Name="YearEntry"
                             Grid.Row="0"
                             Grid.Column="0"
@@ -66,7 +79,11 @@
               </Grid>
 
               <!-- Location Selector -->
-              <Grid Grid.Row="1" RowDefinitions="auto" ColumnDefinitions="auto,auto,auto,*" ColumnSpacing="10" Margin="0,10,0,0">
+              <Grid Grid.Row="1"
+                    RowDefinitions="auto"
+                    ColumnDefinitions="auto,auto,auto,*"
+                    ColumnSpacing="10"
+                    Margin="0,10,0,0">
                      <Label Text="Location:"
                             Grid.Column="0"
                             VerticalOptions="Center"
@@ -77,7 +94,9 @@
                                   IsChecked="True"
                                   CheckedChanged="OnLocationRadioButtonChanged">
                             <RadioButton.Content>
-                                   <Label Text="Jerusalem (default)" VerticalOptions="Center"/>
+                                   <Label Text="Jerusalem (default)"
+                                          TextColor="Black"
+                                          VerticalOptions="Center"/>
                             </RadioButton.Content>
                      </RadioButton>
                      <RadioButton x:Name="CustomLocationRadioButton"
@@ -85,7 +104,9 @@
                                   VerticalOptions="Center"
                                   CheckedChanged="OnLocationRadioButtonChanged">
                             <RadioButton.Content>
-                                   <Label Text="Custom Location" VerticalOptions="Center"/>
+                                   <Label Text="Custom Location"
+                                          TextColor="Black"
+                                          VerticalOptions="Center"/>
                             </RadioButton.Content>
                      </RadioButton>
               </Grid>
@@ -97,7 +118,9 @@
                     IsVisible="False"
                     Margin="0,10,0,0">
                      <!-- Location Entry -->
-                     <Grid Grid.Row="0" RowDefinitions="Auto,Auto" ColumnSpacing="5">
+                     <Grid Grid.Row="0"
+                           RowDefinitions="Auto,Auto"
+                           ColumnSpacing="5">
                             <Entry x:Name="LocationEntry"
                                    Grid.Row="0"
                                    Placeholder="Select or enter location name"
@@ -111,7 +134,7 @@
                                    TextColor="Gray"
                                    Margin="5,2,0,0"/>
                      </Grid>
-                     
+
                      <!-- Overlay Dropdown - positioned absolutely to overlay other controls -->
                      <Border x:Name="LocationDropdown"
                              Grid.Row="0"
@@ -143,7 +166,8 @@
                      </Border>
 
                      <!-- Coordinate Inputs -->
-                     <Grid Grid.Row="1" ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
+                     <Grid Grid.Row="1"
+                           ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
                            ColumnSpacing="5"
                            RowDefinitions="Auto,Auto"
                            Margin="0,15,0,0">
@@ -161,8 +185,8 @@
                                    HorizontalOptions="Start"
                                    VerticalOptions="Center"/>
                             <Picker x:Name="LatDirPicker"
-                                   Grid.Column="2"
-                                   VerticalOptions="Center">
+                                    Grid.Column="2"
+                                    VerticalOptions="Center">
                                    <Picker.ItemsSource>
                                           <x:Array Type="{x:Type x:String}">
                                                  <x:String>N</x:String>
@@ -188,8 +212,8 @@
                                    HorizontalOptions="Start"
                                    VerticalOptions="Center"/>
                             <Picker x:Name="LongDirPicker"
-                                   Grid.Column="6"
-                                   VerticalOptions="Center">
+                                    Grid.Column="6"
+                                    VerticalOptions="Center">
                                    <Picker.ItemsSource>
                                           <x:Array Type="{x:Type x:String}">
                                                  <x:String>E</x:String>
@@ -233,11 +257,9 @@
                       Stroke="LightGray"
                       BackgroundColor="White"
                       Padding="5"
-                      Margin="0,15,0,0">
-                     <ScrollView HeightRequest="700"
-                                 Orientation="Vertical">
+                      Margin="0,5,0,0">
+                     <ScrollView Orientation="Vertical">
                             <Label x:Name="ResultsLabel"
-                                   Text="Results will appear here..."
                                    TextColor="Black"
                                    FontSize="16"
                                    FontFamily="Courier"

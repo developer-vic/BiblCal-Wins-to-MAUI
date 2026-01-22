@@ -7,3 +7,5 @@ obj/
 # Ignore all .txt files
 *.txt
 
+# Ignore project overview document
+PROJECT_OVERVIEW.md

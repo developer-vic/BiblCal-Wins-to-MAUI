@@ -57,6 +57,9 @@ namespace BiblCalMaui.Pages
                 SetupLocation(_locations[0]);
             }
 
+            // Set default text (matches Windows app - shows LOCAL MOON header)
+            ResultsLabel.Text = BiblCalCore.Documentation.GetDocumentation("LocalMoons");
+
             // Track coordinate changes
             LatDegEntry.TextChanged += OnCoordinateChanged;
             LatMinEntry.TextChanged += OnCoordinateChanged;

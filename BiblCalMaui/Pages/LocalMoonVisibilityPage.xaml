@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BiblCalMaui.Pages.LocalMoonVisibilityPage"
-             Title="Local Moon Visibility">
+             Title="LOCAL NEW MOONS - www.chcpublications.net">
 
        <!--Give all Entry and Picker background white-->
        <ContentPage.Resources>
@@ -15,10 +15,23 @@
                             <Setter Property="BackgroundColor"
                                     Value="White"/>
                      </Style>
+                     <Style TargetType="CheckBox">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+                     <Style TargetType="RadioButton">
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                     </Style>
+                     <Style TargetType="Label">
+                            <Setter Property="TextColor"
+                                    Value="White"/>
+                     </Style>
               </ResourceDictionary>
        </ContentPage.Resources>
 
-       <Grid Padding="10" BackgroundColor="#00ffff">
+       <Grid Padding="10"
+                     BackgroundColor="#010080">
               <Grid.RowDefinitions>
                      <RowDefinition Height="Auto"/>
                      <RowDefinition Height="Auto"/>
@@ -26,7 +39,11 @@
               </Grid.RowDefinitions>
 
               <!-- Year Input and Calculate Button, and Location on Same Row -->
-              <Grid Grid.Row="0" RowDefinitions="auto" ColumnDefinitions="auto,auto,*" ColumnSpacing="5" RowSpacing="10">
+              <Grid Grid.Row="0"
+                            RowDefinitions="auto"
+                            ColumnDefinitions="auto,auto,*"
+                            ColumnSpacing="5"
+                            RowSpacing="10">
                      <Entry x:Name="YearEntry"
                             Grid.Row="0"
                             Grid.Column="0"
@@ -42,7 +59,9 @@
                                   WidthRequest="40"
                                   HeightRequest="40"
                                   BackgroundColor="Transparent"/>
-                     <Grid Grid.Row="0" Grid.Column="2" RowDefinitions="Auto,Auto">
+                     <Grid Grid.Row="0"
+                                   Grid.Column="2"
+                                   RowDefinitions="Auto,Auto">
                             <Entry x:Name="LocationEntry"
                                    Grid.Row="0"
                                    Placeholder="Select or enter location name"
@@ -57,7 +76,7 @@
                                    Margin="5,2,0,0"/>
                      </Grid>
               </Grid>
-              
+
               <!-- Overlay Dropdown - positioned absolutely to overlay other controls -->
               <Border x:Name="LocationDropdown"
                       Grid.Row="0"
@@ -90,7 +109,8 @@
               </Border>
 
               <!-- Latitude Inputs -->
-              <Grid Grid.Row="1" ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
+              <Grid Grid.Row="1"
+                            ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
                     ColumnSpacing="5"
                     RowDefinitions="Auto,Auto"
                     Margin="0,15,0,0">
@@ -183,7 +203,6 @@
                      <ScrollView HeightRequest="700"
                                  Orientation="Vertical">
                             <Label x:Name="ResultsLabel"
-                                   Text="Results will appear here..."
                                    TextColor="Black"
                                    FontSize="16"
                                    FontFamily="Courier"

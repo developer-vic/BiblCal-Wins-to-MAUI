@@ -12,7 +12,13 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		var window = new Window(new AppShell());
+		// Use NavigationPage with MainPage as root instead of AppShell
+		var navigationPage = new NavigationPage(new MainPage())
+		{
+			Title = "Biblical Calendar Calculator"
+		};
+		
+		var window = new Window(navigationPage);
 		
 		// Ensure light mode is applied to the window
 		UserAppTheme = AppTheme.Light;

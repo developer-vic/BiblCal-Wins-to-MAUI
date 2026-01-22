@@ -56,8 +56,8 @@ namespace BiblCalMaui.Pages
             JerusalemRadioButton.IsChecked = true;
             CustomLocationGrid.IsVisible = false;
 
-            // Initialize results display
-            ResultsLabel.Text = "Enter a year and click Calculate to see the Holy Days for that year.";
+            // Initialize results display with copyright text (matches Windows app)
+            ResultsLabel.Text = BiblCalCore.Documentation.GetDocumentation("HolyDays");
         }
 
         private void LoadLocations()
@@ -693,5 +693,6 @@ namespace BiblCalMaui.Pages
             // Optionally recalculate when checkbox changes
             // For now, user needs to click Calculate button
         }
+
     }
 }

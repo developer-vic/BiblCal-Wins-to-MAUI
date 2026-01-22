@@ -1,6 +1,43 @@
 # BiblCal MAUI Project
 
-This project contains a .NET MAUI application that uses a shared Core library for Biblical calendar calculations. The Core library has been extracted from the original BiblCal Windows Forms application and adapted for cross-platform use.
+This project is a **migration and modernization** of a Windows Forms application (BiblCal) to a cross-platform .NET MAUI application for macOS and iOS. The original application is a Biblical calendar calculator that performs complex astronomical and calendar calculations.
+
+## Project Purpose
+
+The BiblCal MAUI project migrates the original Windows Forms application to a modern, cross-platform solution using .NET MAUI. The migration follows a clean architecture approach, extracting all business logic into a platform-agnostic Core library while implementing a modern MAUI-based UI.
+
+## Original Application (Windows)
+
+The original application is located in the `BiblCal-master/` folder and was built as a Windows Forms application using:
+- VB.NET (upgraded from VB6)
+- Windows Forms UI
+- Windows-specific libraries (System.Drawing, System.Media, Win32 APIs)
+- UpgradeHelpers libraries for VB6 compatibility
+
+### Key Features of Original Windows App:
+1. **Holy Days Calculator** - Calculates Biblical holy days for a given year
+2. **Local Moon Visibility** - Calculates visible new moons for any location
+3. **Hebrew Calendar Functions** - Hebrew calendar date calculations
+4. **Flood Calculations** - Biblical flood date analysis
+5. **Golgotha Calculations** - Possible crucifixion date calculations
+6. **Sunset/Times Calculations** - Astronomical time calculations
+7. **Location Management** - Save and manage multiple locations with coordinates
+
+## Migration Strategy
+
+The migration follows a **clean architecture approach**:
+
+### 1. Core Library Extraction (`BiblCalCore/`)
+- **Purpose**: Extract all business logic and calculations from Windows-specific code
+- **Target**: .NET Standard 2.1 (maximum compatibility)
+- **Key Achievement**: Removed ALL Windows dependencies
+- **Abstraction**: Created interfaces (`IOutputWriter`, `IUserDataProvider`) to decouple UI from business logic
+
+### 2. MAUI Application (`BiblCalMaui/`)
+- **Purpose**: Cross-platform UI using .NET MAUI
+- **Target Platforms**: iOS and macOS (Mac Catalyst)
+- **Architecture**: Uses the Core library, implements abstraction interfaces
+- **Status**: Two main features fully converted (Local Moon Visibility, Holy Days)
 
 ## Project Structure
 
@@ -16,7 +53,7 @@ This project contains a .NET MAUI application that uses a shared Core library fo
 
 ## Implementation Status
 
-### Completed ✅
+### Phase 0: Core Library & Infrastructure ✅
 
 1. **Complete Core Library**
    - Created `BiblCalCore` class library targeting .NET Standard 2.1
@@ -41,7 +78,10 @@ This project contains a .NET MAUI application that uses a shared Core library fo
    - UI demonstrating Core library usage
    - Successfully builds for iOS and macOS (Mac Catalyst)
 
-4. **Milestone 1: Local Moon Visibility Feature** ✅
+### Phase 0.5: Feature Conversions ✅
+
+#### Local Moon Visibility Page ($350)
+   **Work Completed:**
    - **Complete UI Implementation**
      - Location management system with add/edit/delete functionality
      - Location dropdown (CollectionView) with preset cities matching Windows app
@@ -95,6 +135,35 @@ This project contains a .NET MAUI application that uses a shared Core library fo
      - Delete locations: Type existing location name and press ENTER, confirm deletion
      - Persistent storage: Locations saved to `UserData.xml` in app's local data folder
      - Default locations include: Jerusalem, Lennon MI, New York, Pittsburgh PA, Chicago, Houston, Los Angeles, Honolulu
+
+#### Holy Days Page ($400)
+   **Work Completed:**
+   - Converted Windows Forms UI to MAUI XAML
+   - Implemented Jerusalem/Local location mode switching
+   - Location management system (same as Moon Visibility)
+   - Year input with calculation buttons
+   - EJW (East of Jerusalem/West of International Date Line) checkbox
+   - Results display with formatted output
+   - Full calculation logic port from Windows app
+   - Multiple calculation modes (Holy Days, Months)
+   - Complete UI/UX matching Windows app behavior
+
+## Current State
+
+### What Exists:
+- ✅ Complete Core library with all calculations
+- ✅ Local Moon Visibility page (fully functional)
+- ✅ Holy Days page (fully functional)
+- ✅ Basic navigation structure (AppShell with tabs)
+- ✅ Location management system
+- ✅ MAUI service implementations
+
+### What's Missing for Phase 1:
+- ❌ Home screen (landing page with navigation buttons)
+- ❌ Proper navigation flow (Home → Feature screens → Back to Home)
+- ❌ UI/UX polish for both feature screens
+- ❌ Platform configuration (macOS/iOS app metadata, icons, etc.)
+- ❌ Cross-platform testing and optimization
 
 ### Available Functionality
 
@@ -344,6 +413,18 @@ var (month, day, year) = calculator.JulianToGregorian(jd);
 double yearAfterCreation = calculator.CalculateYearAfterCreation(2024);
 ```
 
+## Key Technical Challenges Overcome
+
+1. **Precision Matching**: VB.NET and C# handle floating-point differently. Implemented intermediate rounding to match Windows app results exactly.
+
+2. **Windows Dependencies**: Removed all Windows-specific code (Win32, System.Drawing, Windows.Forms) while preserving functionality.
+
+3. **UI Framework Migration**: Converted Windows Forms to MAUI XAML while maintaining exact functionality and user experience.
+
+4. **Location Management**: Implemented persistent storage system matching Windows app behavior.
+
+5. **UTC/GMT Offset Handling**: Properly implemented negative UTC offsets (e.g., UTC -5 for Pittsburgh) with correct time normalization.
+
 ## Notes
 
 - **Platform Agnostic**: The Core library works on iOS, Android, macOS, Windows, and any .NET platform
@@ -369,6 +450,43 @@ double yearAfterCreation = calculator.CalculateYearAfterCreation(2024);
 
 **Hebrew Calendar Functions Not Working**
 - Ensure you've called `HebrewCalendarFunctions.LoadHebrewVariables()` before using Hebrew functions
+
+## Technical Architecture
+
+### Core Library (`BiblCalCore/`)
+```
+BiblCalCore/
+├── BiblicalCalendarCalculator.cs    # Core calendar functions
+├── HebrewCalendarFunctions.cs        # Hebrew calendar calculations
+├── LocalMoonCalculations.cs         # Moon visibility calculations
+├── HolyDaysCalculations.cs          # Holy days calculations
+├── FloodCalculations.cs             # Flood date calculations
+├── GolgothaCalculations.cs          # Crucifixion date calculations
+├── SunsetCalculations.cs            # Sunset time calculations
+├── TimesCalculations.cs             # Sun/Moon rise/set calculations
+├── Documentation.cs                 # Help text
+├── IOutputWriter.cs                 # Abstraction interface
+└── IUserDataProvider.cs             # Abstraction interface
+```
+
+### MAUI Application (`BiblCalMaui/`)
+```
+BiblCalMaui/
+├── Pages/
+│   ├── LocalMoonVisibilityPage.xaml      # Moon visibility UI
+│   ├── LocalMoonVisibilityPage.xaml.cs   # Moon visibility logic
+│   ├── HolyDaysPage.xaml                 # Holy days UI
+│   └── HolyDaysPage.xaml.cs              # Holy days logic
+├── Services/
+│   ├── MauiOutputWriter.cs               # Core interface implementation
+│   └── MauiUserDataProvider.cs           # Core interface implementation
+├── MainPage.xaml                         # Currently a test page (needs replacement)
+├── AppShell.xaml                         # Navigation structure
+└── Platforms/                            # Platform-specific configurations
+    ├── iOS/
+    ├── MacCatalyst/
+    └── ...
+```
 
 ## Original Codebase
 

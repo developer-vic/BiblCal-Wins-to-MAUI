@@ -8,8 +8,8 @@
        <ContentPage.Resources>
               <ResourceDictionary>
                      <Style TargetType="Entry">
-                            <Setter Property="BackgroundColor"
-                                    Value="White"/>
+                            <Setter Property="FontSize"
+                                    Value="18"/>
                      </Style>
                      <Style TargetType="Picker">
                             <Setter Property="BackgroundColor"
@@ -27,11 +27,28 @@
                             <Setter Property="TextColor"
                                     Value="White"/>
                      </Style>
+                     <!-- Input Border Style -->
+                     <Style x:Key="InputBorderStyle"
+                            TargetType="Border">
+                            <Setter Property="StrokeThickness"
+                                    Value="1"/>
+                            <Setter Property="Stroke"
+                                    Value="#2A2A2A"/>
+                            <Setter Property="BackgroundColor"
+                                    Value="White"/>
+                            <Setter Property="Padding"
+                                    Value="8,0"/>
+                            <Setter Property="HeightRequest"
+                                    Value="44"/>
+                            <Setter Property="StrokeShape">
+                                   <RoundRectangle CornerRadius="8"/>
+                            </Setter>
+                     </Style>
               </ResourceDictionary>
        </ContentPage.Resources>
 
        <Grid Padding="10"
-                     BackgroundColor="#010080">
+             BackgroundColor="#010080">
               <Grid.RowDefinitions>
                      <RowDefinition Height="Auto"/>
                      <RowDefinition Height="Auto"/>
@@ -40,17 +57,20 @@
 
               <!-- Year Input and Calculate Button, and Location on Same Row -->
               <Grid Grid.Row="0"
-                            RowDefinitions="auto"
-                            ColumnDefinitions="auto,auto,*"
-                            ColumnSpacing="5"
-                            RowSpacing="10">
-                     <Entry x:Name="YearEntry"
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Placeholder="Year"
-                            Keyboard="Numeric"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
+                    RowDefinitions="auto"
+                    ColumnDefinitions="auto,auto,*"
+                    ColumnSpacing="5"
+                    RowSpacing="10">
+                     <Border Grid.Row="0"
+                             Grid.Column="0"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="80">
+                            <Entry x:Name="YearEntry"
+                                   Placeholder="Year"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                     </Border>
                      <ImageButton x:Name="CalculateButton"
                                   Source="local_moon.png"
                                   Clicked="OnCalculateClicked"
@@ -60,19 +80,23 @@
                                   HeightRequest="40"
                                   BackgroundColor="Transparent"/>
                      <Grid Grid.Row="0"
-                                   Grid.Column="2"
-                                   RowDefinitions="Auto,Auto">
-                            <Entry x:Name="LocationEntry"
-                                   Grid.Row="0"
-                                   Placeholder="Select or enter location name"
-                                   Completed="OnLocationEntryCompleted"
-                                   TextChanged="OnLocationEntryTextChanged"
-                                   Focused="OnLocationEntryFocused"
-                                   Unfocused="OnLocationEntryUnfocused"/>
+                           Grid.Column="2"
+                           RowDefinitions="Auto,Auto">
+                            <Border Grid.Row="0"
+                                    Style="{StaticResource InputBorderStyle}">
+                                   <Entry x:Name="LocationEntry"
+                                          Placeholder="Select or enter location name"
+                                          Completed="OnLocationEntryCompleted"
+                                          TextChanged="OnLocationEntryTextChanged"
+                                          Focused="OnLocationEntryFocused"
+                                          Unfocused="OnLocationEntryUnfocused"
+                                          BackgroundColor="Transparent"
+                                          VerticalOptions="Center"/>
+                            </Border>
                             <Label Text="To edit, add or delete a location (Press ENTER after the location name)"
                                    Grid.Row="1"
                                    FontSize="10"
-                                   TextColor="Gray"
+                                   TextColor="White"
                                    Margin="5,2,0,0"/>
                      </Grid>
               </Grid>
@@ -99,7 +123,7 @@
                                    <DataTemplate>
                                           <Grid Padding="10,5">
                                                  <Label Text="{Binding Name}"
-                                                        FontSize="14"
+                                                        FontSize="16"
                                                         TextColor="Black"
                                                         VerticalOptions="Center"/>
                                           </Grid>
@@ -110,72 +134,123 @@
 
               <!-- Latitude Inputs -->
               <Grid Grid.Row="1"
-                            ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
+                    ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
                     ColumnSpacing="5"
                     RowDefinitions="Auto,Auto"
                     Margin="0,15,0,0">
                      <!-- Latitude -->
-                     <Entry x:Name="LatDegEntry"
-                            Placeholder="Deg"
-                            Keyboard="Numeric"
-                            Grid.Column="0"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
-                     <Entry x:Name="LatMinEntry"
-                            Placeholder="Min"
-                            Keyboard="Numeric"
-                            Grid.Column="1"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
-                     <Picker x:Name="LatDirPicker"
-                             Grid.Column="2"
-                             VerticalOptions="Center">
-                            <Picker.ItemsSource>
-                                   <x:Array Type="{x:Type x:String}">
-                                          <x:String>N</x:String>
-                                          <x:String>S</x:String>
-                                   </x:Array>
-                            </Picker.ItemsSource>
-                     </Picker>
+                     <Border Grid.Column="0"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="60">
+                            <Entry x:Name="LatDegEntry"
+                                   Placeholder="Deg"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                     </Border>
+                     <Border Grid.Column="1"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="60">
+                            <Entry x:Name="LatMinEntry"
+                                   Placeholder="Min"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                     </Border>
+                     <Border Grid.Column="2"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="70">
+                            <Grid ColumnDefinitions="*,Auto">
+                                   <Picker x:Name="LatDirPicker"
+                                           Grid.Column="0"
+                                           BackgroundColor="Transparent"
+                                           VerticalOptions="Center">
+                                          <Picker.ItemsSource>
+                                                 <x:Array Type="{x:Type x:String}">
+                                                        <x:String>N</x:String>
+                                                        <x:String>S</x:String>
+                                                 </x:Array>
+                                          </Picker.ItemsSource>
+                                   </Picker>
+                                   <Image x:Name="LatDirDropdownIcon"
+                                          Source="dropdown.png"
+                                          Grid.Column="1"
+                                          WidthRequest="20"
+                                          HeightRequest="20"
+                                          VerticalOptions="Center"
+                                          Margin="5,0,0,0">
+                                          <Image.GestureRecognizers>
+                                                 <TapGestureRecognizer Tapped="OnLatDirDropdownTapped"/>
+                                          </Image.GestureRecognizers>
+                                   </Image>
+                            </Grid>
+                     </Border>
                      <!-- Spacing -->
                      <BoxView Grid.Column="3"
                               BackgroundColor="Transparent"
                               WidthRequest="10"/>
                      <!-- Longitude -->
-                     <Entry x:Name="LongDegEntry"
-                            Placeholder="Deg"
-                            Keyboard="Numeric"
-                            Grid.Column="4"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
-                     <Entry x:Name="LongMinEntry"
-                            Placeholder="Min"
-                            Keyboard="Numeric"
-                            Grid.Column="5"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
-                     <Picker x:Name="LongDirPicker"
-                             Grid.Column="6"
-                             VerticalOptions="Center">
-                            <Picker.ItemsSource>
-                                   <x:Array Type="{x:Type x:String}">
-                                          <x:String>E</x:String>
-                                          <x:String>W</x:String>
-                                   </x:Array>
-                            </Picker.ItemsSource>
-                     </Picker>
+                     <Border Grid.Column="4"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="60">
+                            <Entry x:Name="LongDegEntry"
+                                   Placeholder="Deg"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                     </Border>
+                     <Border Grid.Column="5"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="60">
+                            <Entry x:Name="LongMinEntry"
+                                   Placeholder="Min"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                     </Border>
+                     <Border Grid.Column="6"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="70">
+                            <Grid ColumnDefinitions="*,Auto">
+                                   <Picker x:Name="LongDirPicker"
+                                           Grid.Column="0"
+                                           BackgroundColor="Transparent"
+                                           VerticalOptions="Center">
+                                          <Picker.ItemsSource>
+                                                 <x:Array Type="{x:Type x:String}">
+                                                        <x:String>E</x:String>
+                                                        <x:String>W</x:String>
+                                                 </x:Array>
+                                          </Picker.ItemsSource>
+                                   </Picker>
+                                   <Image x:Name="LongDirDropdownIcon"
+                                          Source="dropdown.png"
+                                          Grid.Column="1"
+                                          WidthRequest="20"
+                                          HeightRequest="20"
+                                          VerticalOptions="Center"
+                                          Margin="5,0,0,0">
+                                          <Image.GestureRecognizers>
+                                                 <TapGestureRecognizer Tapped="OnLongDirDropdownTapped"/>
+                                          </Image.GestureRecognizers>
+                                   </Image>
+                            </Grid>
+                     </Border>
                      <!-- Spacing -->
                      <BoxView Grid.Column="7"
                               BackgroundColor="Transparent"
                               WidthRequest="10"/>
                      <!-- GMT Offset -->
-                     <Entry x:Name="GMTOffsetEntry"
-                            Grid.Column="8"
-                            Placeholder="2"
-                            Keyboard="Numeric"
-                            Grid.Row="0"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
+                     <Border Grid.Column="8"
+                             Grid.Row="0"
+                             Style="{StaticResource InputBorderStyle}"
+                             WidthRequest="60">
+                            <Entry x:Name="GMTOffsetEntry"
+                                   Placeholder="2"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                     </Border>
                      <!-- Labels -->
                      <Label Text="Latitude"
                             Grid.Row="1"

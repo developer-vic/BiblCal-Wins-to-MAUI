@@ -570,6 +570,18 @@ namespace BiblCalMaui.Pages
             }
         }
 
+        private void OnLatDirDropdownTapped(object sender, EventArgs e)
+        {
+            // Trigger the Picker by focusing it
+            LatDirPicker.Focus();
+        }
+
+        private void OnLongDirDropdownTapped(object sender, EventArgs e)
+        {
+            // Trigger the Picker by focusing it
+            LongDirPicker.Focus();
+        }
+
     }
 }
 

@@ -36,7 +36,7 @@ namespace BiblCalMaui.Pages
             // Initialize locations
             _locations = new ObservableCollection<LocationItem>();
             LoadLocations();
-            
+
             // Set up CollectionView ItemsSource to show all locations
             if (LocationDropdownList != null)
             {
@@ -89,7 +89,7 @@ namespace BiblCalMaui.Pages
                     });
                 }
             }
-            
+
             // Refresh CollectionView if dropdown is visible
             if (LocationDropdownList != null && LocationDropdownList.ItemsSource != _locations)
             {
@@ -156,7 +156,7 @@ namespace BiblCalMaui.Pages
                     {
                         LocationDropdownList.ItemsSource = _locations;
                     }
-                    
+
                     // Position dropdown to match entry width and align with it
                     if (LocationEntry != null && LocationDropdown != null)
                     {
@@ -182,10 +182,9 @@ namespace BiblCalMaui.Pages
                                 }
                             });
                         });
+                        // Show the dropdown
+                        LocationDropdown.IsVisible = _locations.Count > 0;
                     }
-                    
-                    // Show the dropdown
-                    LocationDropdown.IsVisible = _locations.Count > 0;
                 }
             }
             catch (Exception ex)
@@ -219,17 +218,17 @@ namespace BiblCalMaui.Pages
                 if (e.CurrentSelection != null && e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is LocationItem selectedLocation)
                 {
                     _isSelectingFromDropdown = true;
-                    
+
                     // Set the location name in the entry
                     if (LocationEntry != null)
                     {
                         LocationEntry.Text = selectedLocation.Name;
                     }
                     _lastLocationName = selectedLocation.Name;
-                    
+
                     // Load the location coordinates
                     SetupLocation(selectedLocation);
-                    
+
                     // Hide dropdown
                     if (LocationDropdown != null)
                     {
@@ -239,9 +238,9 @@ namespace BiblCalMaui.Pages
                     {
                         LocationEntry.Unfocus();
                     }
-                    
+
                     _isSelectingFromDropdown = false;
-                    
+
                     // Clear selection to allow re-selecting the same item
                     if (LocationDropdownList != null)
                     {
@@ -288,10 +287,10 @@ namespace BiblCalMaui.Pages
             if (!found)
             {
                 // Location not found - ask to add
-                bool add = await DisplayAlert("Add Location", 
-                    "Do you wish to add this location?\nSelecting [Yes] will add the location to the list.", 
+                bool add = await DisplayAlert("Add Location",
+                    "Do you wish to add this location?\nSelecting [Yes] will add the location to the list.",
                     "Yes", "No");
-                
+
                 if (add)
                 {
                     try
@@ -335,10 +334,10 @@ namespace BiblCalMaui.Pages
                 if (_changeFlag)
                 {
                     // Location found and coordinates changed - ask to edit
-                    bool edit = await DisplayAlert("Edit Location", 
-                        "Do you wish to edit this location?\nSelecting [Yes] will change the location information.", 
+                    bool edit = await DisplayAlert("Edit Location",
+                        "Do you wish to edit this location?\nSelecting [Yes] will change the location information.",
                         "Yes", "No");
-                    
+
                     if (edit)
                     {
                         // Get coordinates from UI
@@ -377,10 +376,10 @@ namespace BiblCalMaui.Pages
                 else
                 {
                     // Location found and no changes - ask to delete
-                    bool delete = await DisplayAlert("Delete Location", 
-                        "Do you wish to delete this location?", 
+                    bool delete = await DisplayAlert("Delete Location",
+                        "Do you wish to delete this location?",
                         "Yes", "No");
-                    
+
                     if (delete)
                     {
                         _userDataProvider.DeleteLocation(index);
@@ -421,7 +420,7 @@ namespace BiblCalMaui.Pages
         private async void OnCalculateClicked(object? sender, EventArgs e)
         {
             ImageButton? calculateButton = sender as ImageButton;
-            
+
             try
             {
                 // Disable button during calculation

@@ -21,10 +21,10 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>BiblCalMaui</ApplicationTitle>
+		<ApplicationTitle>Bibli_Cal</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.companyname.biblcalmaui</ApplicationId>
+		<!-- App Identifier (package/bundle ID: company + app) -->
+		<ApplicationId>com.programmergwin.bibli_cal</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.8</ApplicationDisplayVersion>
@@ -42,15 +42,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" 
-				  ForegroundFile="Resources\AppIcon\appiconfg.svg" />
-		<!-- 
-			Splash Screen 
-			<MauiSplashScreen Include="Resources\Splash\splash.png" 
-						Size="Medium" Color="#010080" />
-		-->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#010080" BaseSize="128,128" />
+		<!-- App Icon: use logo.png from Images -->
+		<MauiIcon Include="Resources\Images\logo.png" />
+		<!-- Splash Screen: use splash.png -->
+		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#010080" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />

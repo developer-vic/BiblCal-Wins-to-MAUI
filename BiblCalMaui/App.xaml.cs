@@ -1,4 +1,4 @@
-﻿namespace BiblCalMaui;
+namespace BiblCalMaui;
 
 public partial class App : Application
 {
@@ -15,7 +15,7 @@ public partial class App : Application
 		// Use NavigationPage with MainPage as root instead of AppShell
 		var navigationPage = new NavigationPage(new MainPage())
 		{
-			Title = "Biblical Calendar Calculator"
+			Title = "Bibli_Cal"
 		};
 		
 		var window = new Window(navigationPage);

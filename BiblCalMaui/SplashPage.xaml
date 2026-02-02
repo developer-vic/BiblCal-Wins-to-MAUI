@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BiblCalMaui.SplashPage"
+             Title="Bibli_Cal"
+             BackgroundColor="#010080"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <VerticalStackLayout
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Spacing="24"
+            Padding="40">
+
+            <Image
+                Source="splash.png"
+                HeightRequest="220"
+                WidthRequest="320"
+                HorizontalOptions="Center"
+                Aspect="AspectFit"/>
+
+            <Label
+                Text="Bibli_Cal"
+                FontSize="36"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="White"
+                SemanticProperties.HeadingLevel="Level1"/>
+
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>

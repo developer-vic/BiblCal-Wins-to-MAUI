@@ -20,7 +20,7 @@
 
             <!-- Logo -->
             <!-- <Image
-                Source="logo.png"
+                Source="applogo.png"
                 HeightRequest="200"
                 WidthRequest="300"
                 HorizontalOptions="Center"

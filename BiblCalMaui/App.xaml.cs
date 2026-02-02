@@ -12,17 +12,21 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		// Use NavigationPage with MainPage as root instead of AppShell
-		var navigationPage = new NavigationPage(new MainPage())
+		// Android uses native splash; iOS/Mac Catalyst show custom splash page then main
+		ContentPage rootPage = DeviceInfo.Platform == DevicePlatform.Android
+			? new MainPage()
+			: new SplashPage();
+
+		var navigationPage = new NavigationPage(rootPage)
 		{
 			Title = "Bibli_Cal"
 		};
-		
+
 		var window = new Window(navigationPage);
-		
+
 		// Ensure light mode is applied to the window
 		UserAppTheme = AppTheme.Light;
-		
+
 		return window;
 	}
 }

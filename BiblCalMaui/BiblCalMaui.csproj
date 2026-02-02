@@ -42,8 +42,7 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#010080" />
 
 		<!-- Images: exclude logo.png from wildcard (used by MauiIcon); add with alias so in-app use doesn't conflict -->
-		<MauiImage Include="Resources\Images\*" /> 
-		<MauiImage Include="Resources\Splash\splash.png" />
+		<MauiImage Include="Resources\Images\*" />  
 		
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />

@@ -58,10 +58,10 @@
 
               <!-- Year Input, Calculate Buttons, EJW Checkbox, and Label -->
               <Grid Grid.Row="0"
-                    RowDefinitions="auto"
-                    ColumnDefinitions="auto,auto,auto,*,*"
-                    ColumnSpacing="5"
-                    RowSpacing="10">
+                    RowDefinitions="auto,auto"
+                    ColumnDefinitions="auto,auto,auto,*,auto"
+                    ColumnSpacing="15"
+                    RowSpacing="15">
                      <Border Grid.Row="0"
                              Grid.Column="0"
                              Style="{StaticResource InputBorderStyle}"
@@ -89,29 +89,31 @@
                                   WidthRequest="40"
                                   HeightRequest="40"
                                   BackgroundColor="Transparent"/>
-                     <CheckBox x:Name="EJWCheckBox"
-                               Grid.Row="0"
-                               Grid.Column="3"
-                               VerticalOptions="Center"
-                               HorizontalOptions="End"
-                               CheckedChanged="OnEJWCheckBoxChanged"/>
-                     <Label Text="East of Jerusalem / West of International Date Line"
-                            Grid.Row="0"
-                            Grid.Column="4"
-                            VerticalOptions="Center"
-                            FontSize="14"/>
+
+                     <HorizontalStackLayout  Grid.Row="1"
+                                             Grid.Column="0"
+                                             Grid.ColumnSpan="5"
+                                             Spacing="10"
+                                             HorizontalOptions="End">
+                            <CheckBox x:Name="EJWCheckBox"
+                                      WidthRequest="20"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="End"
+                                      CheckedChanged="OnEJWCheckBoxChanged"/>
+                            <Label Text="East of Jerusalem / West of International Date Line"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End"
+                                   FontSize="14"/>
+                     </HorizontalStackLayout>
               </Grid>
 
               <!-- Location Selector -->
               <Grid Grid.Row="1"
+                    HorizontalOptions="Center"
                     RowDefinitions="auto"
                     ColumnDefinitions="auto,auto,auto,*"
                     ColumnSpacing="10"
-                    Margin="0,10,0,0">
-                     <Label Text="Location:"
-                            Grid.Column="0"
-                            VerticalOptions="Center"
-                            FontSize="14"/>
+                    Margin="0,15,0,0">
                      <RadioButton x:Name="JerusalemRadioButton"
                                   Grid.Column="1"
                                   VerticalOptions="Center"
@@ -166,25 +168,25 @@
                      <!-- Overlay Dropdown - positioned absolutely to overlay other controls -->
                      <Border x:Name="LocationDropdown"
                              Grid.Row="0"
-                             Grid.RowSpan="3"
+                             Grid.RowSpan="2"
                              StrokeThickness="1"
                              Stroke="Gray"
-                             BackgroundColor="White"
                              IsVisible="False"
                              MaximumHeightRequest="200"
                              ZIndex="1000"
                              HorizontalOptions="Start"
                              VerticalOptions="Start"
-                             Margin="120,40,0,0">
+                             Margin="0,40,0,0">
                             <CollectionView x:Name="LocationDropdownList"
                                             SelectionMode="Single"
+                                            HeightRequest="200"
                                             SelectionChanged="OnLocationDropdownItemSelected"
                                             BackgroundColor="White">
                                    <CollectionView.ItemTemplate>
                                           <DataTemplate>
-                                                 <Grid Padding="10,5">
+                                                 <Grid Padding="10,7">
                                                         <Label Text="{Binding Name}"
-                                                               FontSize="14"
+                                                               FontSize="15"
                                                                TextColor="Black"
                                                                VerticalOptions="Center"/>
                                                  </Grid>
@@ -195,12 +197,28 @@
 
                      <!-- Coordinate Inputs -->
                      <Grid Grid.Row="1"
-                           ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto"
+                           HorizontalOptions="Center"
+                           RowDefinitions="Auto,Auto,Auto,Auto"
+                           ColumnDefinitions="auto,auto,auto,auto,auto,auto,auto"
                            ColumnSpacing="5"
-                           RowDefinitions="Auto,Auto"
-                           Margin="0,15,0,0">
+                           RowSpacing="5"
+                           Margin="0,10,0,0">
+                            <!-- Labels -->
+                            <Label Text="Latitude"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="3"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Longitude"
+                                   Grid.Row="0"
+                                   Grid.Column="4"
+                                   Grid.ColumnSpan="3"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
                             <!-- Latitude -->
                             <Border Grid.Column="0"
+                                    Grid.Row="1"
                                     Style="{StaticResource InputBorderStyle}"
                                     WidthRequest="60">
                                    <Entry x:Name="LatDegEntry"
@@ -210,6 +228,7 @@
                                           VerticalOptions="Center"/>
                             </Border>
                             <Border Grid.Column="1"
+                                    Grid.Row="1"
                                     Style="{StaticResource InputBorderStyle}"
                                     WidthRequest="60">
                                    <Entry x:Name="LatMinEntry"
@@ -219,8 +238,9 @@
                                           VerticalOptions="Center"/>
                             </Border>
                             <Border Grid.Column="2"
+                                    Grid.Row="1"
                                     Style="{StaticResource InputBorderStyle}"
-                                    WidthRequest="70">
+                                    WidthRequest="60">
                                    <Grid ColumnDefinitions="*,Auto">
                                           <Picker x:Name="LatDirPicker"
                                                   Grid.Column="0"
@@ -248,10 +268,12 @@
                             </Border>
                             <!-- Spacing -->
                             <BoxView Grid.Column="3"
+                                     Grid.Row="1"
                                      BackgroundColor="Transparent"
                                      WidthRequest="10"/>
                             <!-- Longitude -->
                             <Border Grid.Column="4"
+                                    Grid.Row="1"
                                     Style="{StaticResource InputBorderStyle}"
                                     WidthRequest="60">
                                    <Entry x:Name="LongDegEntry"
@@ -261,6 +283,7 @@
                                           VerticalOptions="Center"/>
                             </Border>
                             <Border Grid.Column="5"
+                                    Grid.Row="1"
                                     Style="{StaticResource InputBorderStyle}"
                                     WidthRequest="60">
                                    <Entry x:Name="LongMinEntry"
@@ -270,8 +293,9 @@
                                           VerticalOptions="Center"/>
                             </Border>
                             <Border Grid.Column="6"
+                                    Grid.Row="1"
                                     Style="{StaticResource InputBorderStyle}"
-                                    WidthRequest="70">
+                                    WidthRequest="60">
                                    <Grid ColumnDefinitions="*,Auto">
                                           <Picker x:Name="LongDirPicker"
                                                   Grid.Column="0"
@@ -297,13 +321,18 @@
                                           </Image>
                                    </Grid>
                             </Border>
-                            <!-- Spacing -->
-                            <BoxView Grid.Column="7"
-                                     BackgroundColor="Transparent"
-                                     WidthRequest="10"/>
+
                             <!-- GMT Offset -->
-                            <Border Grid.Column="8"
-                                    Grid.Row="0"
+                            <Label Text="UTC/GMT"
+                                   Grid.Row="3"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="3"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center"/>
+                            <Border Grid.Row="3"
+                                    Grid.Column="3"
+                                    Grid.ColumnSpan="3"
+                                    HorizontalOptions="Start"
                                     Style="{StaticResource InputBorderStyle}"
                                     WidthRequest="60">
                                    <Entry x:Name="GMTOffsetEntry"
@@ -312,21 +341,6 @@
                                           BackgroundColor="Transparent"
                                           VerticalOptions="Center"/>
                             </Border>
-                            <!-- Labels -->
-                            <Label Text="Latitude"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
-                                   Grid.ColumnSpan="3"
-                                   VerticalOptions="Center"/>
-                            <Label Text="Longitude"
-                                   Grid.Row="1"
-                                   Grid.Column="4"
-                                   Grid.ColumnSpan="3"
-                                   VerticalOptions="Center"/>
-                            <Label Text="UTC/GMT"
-                                   Grid.Row="1"
-                                   Grid.Column="8"
-                                   VerticalOptions="Center"/>
                      </Grid>
               </Grid>
 
@@ -337,7 +351,7 @@
                       BackgroundColor="White"
                       Padding="5"
                       Margin="0,5,0,0">
-                     <ScrollView Orientation="Vertical">
+                     <ScrollView Orientation="Both">
                             <Label x:Name="ResultsLabel"
                                    TextColor="Black"
                                    FontSize="16"

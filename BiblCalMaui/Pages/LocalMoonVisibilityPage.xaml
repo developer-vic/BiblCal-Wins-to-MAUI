@@ -114,9 +114,10 @@
                       ZIndex="1000"
                       HorizontalOptions="Start"
                       VerticalOptions="Start"
-                      Margin="120,40,0,0">
+                      Margin="140,40,0,0">
                      <CollectionView x:Name="LocationDropdownList"
                                      SelectionMode="Single"
+                                     HeightRequest="200"
                                      SelectionChanged="OnLocationDropdownItemSelected"
                                      BackgroundColor="White">
                             <CollectionView.ItemTemplate>
@@ -275,8 +276,7 @@
                       BackgroundColor="White"
                       Padding="5"
                       Margin="0,15,0,0">
-                     <ScrollView HeightRequest="700"
-                                 Orientation="Vertical">
+                     <ScrollView Orientation="Both">
                             <Label x:Name="ResultsLabel"
                                    TextColor="Black"
                                    FontSize="16"

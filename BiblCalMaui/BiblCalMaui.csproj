@@ -39,7 +39,7 @@
 		<!-- App Icon: use logo from AppIcon (Images/logo.png used in-app with alias applogo to avoid duplicate) -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" />
 		<!-- Splash Screen: use splash.png -->
-		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#010080" />
+		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#FFFFFF" />
 
 		<!-- Images: exclude logo.png from wildcard (used by MauiIcon); add with alias so in-app use doesn't conflict -->
 		<MauiImage Include="Resources\Images\*" />  

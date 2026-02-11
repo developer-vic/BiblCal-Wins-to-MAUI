@@ -3,32 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BiblCalMaui.SplashPage"
              Title="Bibli_Cal"
-             BackgroundColor="#010080"
+             BackgroundColor="{StaticResource BrandColor3}"
              NavigationPage.HasNavigationBar="False">
 
-    <Grid>
-        <VerticalStackLayout
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            Spacing="24"
-            Padding="40">
-
-            <Image
-                Source="splash.png"
-                HeightRequest="220"
-                WidthRequest="320"
-                HorizontalOptions="Center"
-                Aspect="AspectFit"/>
-
-            <Label
-                Text="Bibli_Cal"
-                FontSize="36"
-                FontAttributes="Bold"
-                HorizontalOptions="Center"
-                TextColor="White"
-                SemanticProperties.HeadingLevel="Level1"/>
-
-        </VerticalStackLayout>
-    </Grid>
+    <Image
+        Source="splash.png"
+        HorizontalOptions="Center"
+        Aspect="AspectFit"/>
 
 </ContentPage>

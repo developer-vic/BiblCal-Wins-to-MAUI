@@ -15,14 +15,14 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Bibli_Cal</ApplicationTitle>
+		<ApplicationTitle>BibliCal</ApplicationTitle>
 
 		<!-- App Identifier (package/bundle ID: company + app) -->
-		<ApplicationId>com.bibli_cal.app</ApplicationId>
+		<ApplicationId>com.biblical.app</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.8</ApplicationDisplayVersion>
-		<ApplicationVersion>8</ApplicationVersion>
+		<ApplicationDisplayVersion>1.9</ApplicationDisplayVersion>
+		<ApplicationVersion>9</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
@@ -33,6 +33,24 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-ios' AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
+		<RuntimeIdentifiers>iossimulator-arm64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<!-- Debug for real devices  -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' == 'ios-arm64'">
+        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<CodesignKey>Apple Development: Oluwasegun Babatunde (3WD2K72RTP)</CodesignKey>
+		<CodesignProvision>BibliCal Debug</CodesignProvision>
+	</PropertyGroup>
+
+	<!-- Release for App Store -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND '$(RuntimeIdentifier)' == 'ios-arm64'">
+        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<CodesignKey>Apple Distribution: Derek Echad Ysraeli Beit Midrash (WRAL7K4KH5)</CodesignKey>
+		<CodesignProvision>BibliCal AppStore</CodesignProvision>
 	</PropertyGroup>
 
 	<ItemGroup>

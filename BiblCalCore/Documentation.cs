@@ -43,7 +43,8 @@ namespace BiblCalCore
                    "       given away. You may charge enough to cover media costs if necessary." + CRLF +
                    "       We have several other programs as well as a variety of documents available." + CRLF +
                    "       Please contact us for details or download them from our WEB site at" + CRLF +
-                   "                               http://www.chcpublications.net" + CRLF + CRLF;
+                   //"                               http://www.chcpublications.net" + CRLF 
+                   + CRLF;
             
             // Continue with version and documentation (matches Windows app line 15)
             instructions += "                          Calculated Biblical Calendar        " + Version + CRLF + CRLF +
@@ -74,34 +75,34 @@ namespace BiblCalCore
                    "    useful for preparing a Biblical solar-lunar calendar. This section also uses" + CRLF +
                    "    Jerusalem as its reference point." + CRLF;
             
-            // Continue (matches Windows app line 17)
-            instructions += CRLF + "        The other sections, summarised below, can be accessed from the Menu Bar." + CRLF +
-                   "    The data from any of the modules can be printed by selecting File, Print." + CRLF + CRLF +
-                   "       CREATION calculates the day of the week for Abib 1 to determine which years" + CRLF +
-                   "    are possibly the Creation Year. Genesis 2:2& 3, coupled with Exodus 20:11 confirm" + CRLF +
-                   "    that the seventh day (Saturday in most of the world)is the Sabbath. This means" + CRLF +
-                   "    that the Creation began on Sunday (ie, 'after sunset' on Saturday evening)." + CRLF +
-                   "    The module creates a table of the years that could have begun on Sunday." + CRLF +
-                   "    Bible chronology places the Creation year near 4004 BCE (BC)." + CRLF + CRLF +
-                   "       FLOOD calculates the number of days between the 17th day of the second month" + CRLF +
-                   "    and the 17th of the seventh month. We know from Genesis 7:11 and 8:3 that 'Noah's'" + CRLF +
-                   "    Flood lasted 150 days, extending from the 17th day of the second month until the" + CRLF +
-                   "    17th day of the seventh month.  This module runs a number of consecutive years" + CRLF +
-                   "    and creates a table of the years that could have the required 150 days." + CRLF +
-                   "    Bible chronology places the year of the Flood near 2348 BCE (BC)." + CRLF;
+            // // Continue (matches Windows app line 17)
+            // instructions += CRLF + "        The other sections, summarised below, can be accessed from the Menu Bar." + CRLF +
+            //        "    The data from any of the modules can be printed by selecting File, Print." + CRLF + CRLF +
+            //        "       CREATION calculates the day of the week for Abib 1 to determine which years" + CRLF +
+            //        "    are possibly the Creation Year. Genesis 2:2& 3, coupled with Exodus 20:11 confirm" + CRLF +
+            //        "    that the seventh day (Saturday in most of the world)is the Sabbath. This means" + CRLF +
+            //        "    that the Creation began on Sunday (ie, 'after sunset' on Saturday evening)." + CRLF +
+            //        "    The module creates a table of the years that could have begun on Sunday." + CRLF +
+            //        "    Bible chronology places the Creation year near 4004 BCE (BC)." + CRLF + CRLF +
+            //        "       FLOOD calculates the number of days between the 17th day of the second month" + CRLF +
+            //        "    and the 17th of the seventh month. We know from Genesis 7:11 and 8:3 that 'Noah's'" + CRLF +
+            //        "    Flood lasted 150 days, extending from the 17th day of the second month until the" + CRLF +
+            //        "    17th day of the seventh month.  This module runs a number of consecutive years" + CRLF +
+            //        "    and creates a table of the years that could have the required 150 days." + CRLF +
+            //        "    Bible chronology places the year of the Flood near 2348 BCE (BC)." + CRLF;
             
-            // Continue (matches Windows app line 18)
-            instructions += CRLF + "      JORDAN CROSSING calculates Passover (Abib 14) and the Wave Offering for the years" + CRLF +
-                   "   that the Israelites would have crossed the Jordan to occupy Canaan." + CRLF +
-                   "   This module helps pinpoint the year of the Crossing as it had to be a year in which" + CRLF +
-                   "   the Passover occurred on a Sabbath (Joshua 5:11)." + CRLF + CRLF +
-                   "      GOLGOTHA lists all the possible dates of Jesus Christ's (Jeshua the Messiah's)" + CRLF +
-                   "   death and resurrection. As the Scriptures make plain, Jeshua was impaled at Golgotha" + CRLF +
-                   "   on the afternoon of Abib 14, the Preparation Day of the Passover Feast. Jeshua" + CRLF +
-                   "   said there was one sign that would prove he was the Christ: He would spend three days" + CRLF +
-                   "   and three nights in the heart of the earth (Matthew chap.12, verses 39 & 40)." + CRLF +
-                   "   This module shows that Jeshua fulfilled this sign precisely, confirming that He is the" + CRLF +
-                   "   Anointed Christ." + CRLF + CRLF;
+            // // Continue (matches Windows app line 18)
+            // instructions += CRLF + "      JORDAN CROSSING calculates Passover (Abib 14) and the Wave Offering for the years" + CRLF +
+            //        "   that the Israelites would have crossed the Jordan to occupy Canaan." + CRLF +
+            //        "   This module helps pinpoint the year of the Crossing as it had to be a year in which" + CRLF +
+            //        "   the Passover occurred on a Sabbath (Joshua 5:11)." + CRLF + CRLF +
+            //        "      GOLGOTHA lists all the possible dates of Jesus Christ's (Jeshua the Messiah's)" + CRLF +
+            //        "   death and resurrection. As the Scriptures make plain, Jeshua was impaled at Golgotha" + CRLF +
+            //        "   on the afternoon of Abib 14, the Preparation Day of the Passover Feast. Jeshua" + CRLF +
+            //        "   said there was one sign that would prove he was the Christ: He would spend three days" + CRLF +
+            //        "   and three nights in the heart of the earth (Matthew chap.12, verses 39 & 40)." + CRLF +
+            //        "   This module shows that Jeshua fulfilled this sign precisely, confirming that He is the" + CRLF +
+            //        "   Anointed Christ." + CRLF + CRLF;
             
             // Continue (matches Windows app line 19)
             instructions += "       LOCAL MOONS calculates the New Moons for the coordinates in the 'Latitude' and" + CRLF +
@@ -152,12 +153,12 @@ namespace BiblCalCore
                    "    weather to select the day and/or month He wishes to use for His Holy Days that year." + CRLF +
                    "    The special date modules like 'Flood' use an older algorithm that calculates" + CRLF +
                    "    the vernal equinox to estimate the beginning of the year." + CRLF + CRLF +
-                   "        Bible chronology, history and Biblical Calendar suggest these dates:" + CRLF +
-                   "    The first day of Creation may have been 29/3/4004 BCE (BC). The Flood began during" + CRLF +
-                   "    2348 BCE. Exodus was 1550 BCE and the crossing of the Jordan under Joshua was in" + CRLF +
-                   "    1510 BCE. The dedication of Solomon's Tabernacle was 949 BCE. Messiah's birth was near" + CRLF +
-                   "    the Day of Trumpets, 4 BCE. He was killed on April 23, 31 CE (AD) and resurrected" + CRLF +
-                   "    after exactly three days and three nights in the tomb." + CRLF + CRLF +
+                //    "        Bible chronology, history and Biblical Calendar suggest these dates:" + CRLF +
+                //    "    The first day of Creation may have been 29/3/4004 BCE (BC). The Flood began during" + CRLF +
+                //    "    2348 BCE. Exodus was 1550 BCE and the crossing of the Jordan under Joshua was in" + CRLF +
+                //    "    1510 BCE. The dedication of Solomon's Tabernacle was 949 BCE. Messiah's birth was near" + CRLF +
+                //    "    the Day of Trumpets, 4 BCE. He was killed on April 23, 31 CE (AD) and resurrected" + CRLF +
+                //    "    after exactly three days and three nights in the tomb." + CRLF + CRLF +
                    "       Results are given in modified proleptic Gregorian Calendar dates, using a" + CRLF +
                    "    Day/Month/Year format. The modifications are adjustments for Hezekiah's 10 'steps'" + CRLF +
                    "    backwards (an extra 40 minutes on 5 Apr -651 BCE) and/or Joshua's long day (an extra" + CRLF +
@@ -166,17 +167,18 @@ namespace BiblCalCore
                    "       No Daylight Saving adjustments are made in any module." + CRLF + CRLF;
             
             // Continue (matches Windows app line 23 - the ending)
-            instructions += "       All days begin at dusk in Israel and slowly move westward around the entire" + CRLF +
-                   "    world, following the dusk. This means that all people living west of the " + CRLF +
-                   "     International Date Line and east of Israel should begin their Holy Days after they have" + CRLF +
-                   "    begun in Israel, as explained in two Dateline articles on our Web Site. These" + CRLF +
-                   "    considerations also affect the weekly Sabbath in this region so their Sabbath" + CRLF +
-                   "    also begins after it has begun in Israel." + CRLF + CRLF +
-                   "       This one day delay should not be added if living (or examining events which" + CRLF +
-                   "    occur) in Israel and/or the region westward to the International date line." + CRLF + CRLF +
-                   "       If you need and/or want this program to make this correction to the Sabbath and" + CRLF +
-                   "    Holy Days, you should check the box at the top of the screen." + CRLF + CRLF +
-                   "                      Pressing F1 in any section will show its help screen." + CRLF + CRLF +
+            instructions += 
+                //    "       All days begin at dusk in Israel and slowly move westward around the entire" + CRLF +
+                //    "    world, following the dusk. This means that all people living west of the " + CRLF +
+                //    "     International Date Line and east of Israel should begin their Holy Days after they have" + CRLF +
+                //    "    begun in Israel, as explained in two Dateline articles on our Web Site. These" + CRLF +
+                //    "    considerations also affect the weekly Sabbath in this region so their Sabbath" + CRLF +
+                //    "    also begins after it has begun in Israel." + CRLF + CRLF +
+                //    "       This one day delay should not be added if living (or examining events which" + CRLF +
+                //    "    occur) in Israel and/or the region westward to the International date line." + CRLF + CRLF +
+                //    "       If you need and/or want this program to make this correction to the Sabbath and" + CRLF +
+                //    "    Holy Days, you should check the box at the top of the screen." + CRLF + CRLF +
+                //    "                      Pressing F1 in any section will show its help screen." + CRLF + CRLF +
                    "    We thank the United States Naval Observatory for the moon images used in this program." + CRLF;
             
             return instructions;
@@ -212,7 +214,8 @@ namespace BiblCalCore
                    "    Days modules.  No Daylight Saving adjustments are made in any module." + CRLF + CRLF +
                    "      Use the Calendar convertor module to convert dates between various Calendars." + CRLF +
                    "      TIMES will give you moon and sun rising/setting for any day and location." + CRLF + CRLF +
-                   "                Calculated Biblical Calendar       http://www.chcpublications.net" + CRLF;
+                   //"                Calculated Biblical Calendar       http://www.chcpublications.net" 
+                   + CRLF;
         }
 
         private static string GetSunsetDocumentation()

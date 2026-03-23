@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BiblCalMaui.Pages.LocalMoonVisibilityPage"
-             Title="LOCAL NEW MOONS - www.chcpublications.net">
+             Title="LOCAL NEW MOONS">
 
        <!--Give all Entry and Picker background white-->
        <ContentPage.Resources>
@@ -276,7 +276,7 @@
                       BackgroundColor="White"
                       Padding="5"
                       Margin="0,15,0,0">
-                     <ScrollView Orientation="Both">
+                     <ScrollView Orientation="Vertical">
                             <Label x:Name="ResultsLabel"
                                    TextColor="Black"
                                    FontSize="16"

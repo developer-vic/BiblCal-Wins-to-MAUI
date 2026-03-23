@@ -14,6 +14,9 @@ namespace BiblCalMaui.Pages
         private bool _changeFlag = false; // Track if coordinates have been changed
         private string _lastLocationName = ""; // Track last selected location name
         private bool _isSelectingFromDropdown = false; // Prevent text change events during dropdown selection
+        private const double MinResultsFontSize = 10;
+        private const double MaxResultsFontSize = 42;
+        private double _resultsPinchStartFontSize = 16;
 
         public class LocationItem
         {
@@ -579,6 +582,32 @@ namespace BiblCalMaui.Pages
         {
             // Trigger the Picker by focusing it
             LongDirPicker.Focus();
+        }
+
+        private void OnResultsLabelPinchUpdated(object? sender, PinchGestureUpdatedEventArgs e)
+        {
+            if (ResultsLabel is null)
+            {
+                return;
+            }
+
+            switch (e.Status)
+            {
+                case GestureStatus.Started:
+                    _resultsPinchStartFontSize = ResultsLabel.FontSize;
+                    break;
+
+                case GestureStatus.Running:
+                    // Use font-size zoom so ScrollView content size updates naturally.
+                    double newFontSize = _resultsPinchStartFontSize * e.Scale;
+                    ResultsLabel.FontSize = Math.Clamp(newFontSize, MinResultsFontSize, MaxResultsFontSize);
+                    _resultsPinchStartFontSize = ResultsLabel.FontSize;
+                    break;
+
+                case GestureStatus.Completed:
+                case GestureStatus.Canceled:
+                    break;
+            }
         }
 
     }

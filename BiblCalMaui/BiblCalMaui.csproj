@@ -39,11 +39,11 @@
 		<RuntimeIdentifiers>iossimulator-arm64</RuntimeIdentifiers>
 	</PropertyGroup>
 
-	<!-- Debug for real devices  -->
+	<!-- Debug for real devices: use automatic profile resolution -->
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' == 'ios-arm64'">
-        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
-		<CodesignKey>Apple Development: Oluwasegun Babatunde (3WD2K72RTP)</CodesignKey>
-		<CodesignProvision>BibliCal Debug</CodesignProvision>
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<CodesignKey>Apple Development</CodesignKey>
+		<CodesignProvision>Automatic</CodesignProvision>
 	</PropertyGroup>
 
 	<!-- Release for App Store -->
@@ -51,6 +51,13 @@
         <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
 		<CodesignKey>Apple Distribution: Derek Echad Ysraeli Beit Midrash (WRAL7K4KH5)</CodesignKey>
 		<CodesignProvision>BibliCal AppStore</CodesignProvision>
+	</PropertyGroup>
+
+	<!-- AdHoc for iOS device distribution -->
+	<PropertyGroup Condition="'$(Configuration)' == 'AdHoc' AND '$(RuntimeIdentifier)' == 'ios-arm64'">
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<CodesignKey>Apple Distribution</CodesignKey>
+		<CodesignProvision>BibliCal Adhoc</CodesignProvision>
 	</PropertyGroup>
 
 	<ItemGroup>

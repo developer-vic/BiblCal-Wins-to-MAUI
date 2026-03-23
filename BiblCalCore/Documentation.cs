@@ -42,9 +42,8 @@ namespace BiblCalCore
                    "       Permission is given to copy this program provided it is not altered and is" + CRLF +
                    "       given away. You may charge enough to cover media costs if necessary." + CRLF +
                    "       We have several other programs as well as a variety of documents available." + CRLF +
-                   "       Please contact us for details or download them from our WEB site at" + CRLF +
-                   //"                               http://www.chcpublications.net" + CRLF 
-                   + CRLF;
+                   "       Please contact us for details or download them from our WEB site at" + CRLF;// +
+                   //"                               http://www.chcpublications.net" + CRLF + CRLF;
             
             // Continue with version and documentation (matches Windows app line 15)
             instructions += "                          Calculated Biblical Calendar        " + Version + CRLF + CRLF +
@@ -213,9 +212,8 @@ namespace BiblCalCore
                    "    long day, so data for times prior to these events will not match with the Biblical Holy" + CRLF +
                    "    Days modules.  No Daylight Saving adjustments are made in any module." + CRLF + CRLF +
                    "      Use the Calendar convertor module to convert dates between various Calendars." + CRLF +
-                   "      TIMES will give you moon and sun rising/setting for any day and location." + CRLF + CRLF +
-                   //"                Calculated Biblical Calendar       http://www.chcpublications.net" 
-                   + CRLF;
+                   "      TIMES will give you moon and sun rising/setting for any day and location." + CRLF + CRLF;// +
+                   //"                Calculated Biblical Calendar       http://www.chcpublications.net" + CRLF;
         }
 
         private static string GetSunsetDocumentation()

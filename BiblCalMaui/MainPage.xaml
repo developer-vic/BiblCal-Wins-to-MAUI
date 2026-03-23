@@ -8,7 +8,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Image Source="splash.png"
                Grid.RowSpan="3"
@@ -52,15 +52,14 @@
         <VerticalStackLayout
             Grid.Row="1"
             VerticalOptions="Center"
-            HorizontalOptions="Center"
+            HorizontalOptions="Center" 
             Spacing="30">
             <!-- Holy Days Button -->
             <Button
                 x:Name="HolyDaysButton"
                 Text="Holy Days"
                 FontSize="20"
-                Padding="40,20"
-                Margin="0,120,0,0"
+                Padding="40,20" 
                 CornerRadius="10"
                 Clicked="OnHolyDaysClicked"
                 HorizontalOptions="Fill"

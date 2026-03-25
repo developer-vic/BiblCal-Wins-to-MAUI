@@ -352,7 +352,7 @@
                       Padding="5"
                       Margin="0,5,0,0">
                      <ScrollView x:Name="ResultsScrollView"
-                                 Orientation="Vertical">
+                                 Orientation="Both">
                             <ScrollView.GestureRecognizers>
                                    <PinchGestureRecognizer PinchUpdated="OnResultsLabelPinchUpdated"/>
                             </ScrollView.GestureRecognizers>

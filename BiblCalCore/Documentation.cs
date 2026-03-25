@@ -114,19 +114,19 @@ namespace BiblCalCore
                    "       TIMES calculates the times of sunrise, sunset, moonrise, moonset and illuminated" + CRLF +
                    "    fraction of the moon for the coordinates in the 'Latitude' and 'Longitude' boxes," + CRLF +
                    "    providing the user with these times for the entire year." + CRLF + CRLF +
-                   "       CONVERSIONS displays the date on four different calendars simultaneously. The" + CRLF +
-                   "    date can be altered on any of the calendars and on clicking Compute, all of the" + CRLF +
-                   "    calendars will be syncronised. Pressing F1 will bring up detailed help for this" + CRLF +
-                   "    module (and the others too)." + CRLF + CRLF;
+                //    "       CONVERSIONS displays the date on four different calendars simultaneously. The" + CRLF +
+                //    "    date can be altered on any of the calendars and on clicking Compute, all of the" + CRLF +
+                //    "    calendars will be syncronised. Pressing F1 will bring up detailed help for this" + CRLF +
+                //    "    module (and the others too)." + CRLF + CRLF;
             
-            // Continue (matches Windows app line 20)
-            instructions += "       RABBINIC CALENDAR calculates the months and Holy Days using the standard Rabbinical" + CRLF +
-                   "    calendar as defined by Hillel II in the fourth century AD and reiterated by Maimonides" + CRLF +
-                   "    in the middle ages. It uses their various unbiblical postponements and decisions for" + CRLF +
-                   "    the timing of their months and holy days." + CRLF + CRLF +
-                   "       EASTER calculates the dates for the misnamed 'Good Friday' and 'Easter Sunday'." + CRLF +
-                   "    Please note that these calculations are only provided for comparison purposes." + CRLF +
-                   "    These are the counterfeits of the Babylonian system, NOT Jehovah God's Holy Days." + CRLF + CRLF +
+            // // Continue (matches Windows app line 20)
+            // instructions += "       RABBINIC CALENDAR calculates the months and Holy Days using the standard Rabbinical" + CRLF +
+            //        "    calendar as defined by Hillel II in the fourth century AD and reiterated by Maimonides" + CRLF +
+            //        "    in the middle ages. It uses their various unbiblical postponements and decisions for" + CRLF +
+            //        "    the timing of their months and holy days." + CRLF + CRLF +
+            //        "       EASTER calculates the dates for the misnamed 'Good Friday' and 'Easter Sunday'." + CRLF +
+            //        "    Please note that these calculations are only provided for comparison purposes." + CRLF +
+            //        "    These are the counterfeits of the Babylonian system, NOT Jehovah God's Holy Days." + CRLF + CRLF +
                    "       CALCULATION PRINCIPLES" + CRLF +
                    "       These programs estimate the dates of God's Annual Holy Days by calculating the" + CRLF;
             

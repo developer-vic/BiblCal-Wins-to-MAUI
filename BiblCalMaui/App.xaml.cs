@@ -19,7 +19,7 @@ public partial class App : Application
 
 		var navigationPage = new NavigationPage(rootPage)
 		{
-			Title = "Bibli_Cal"
+			Title = "MoonWitness"
 		};
 
 		var window = new Window(navigationPage);

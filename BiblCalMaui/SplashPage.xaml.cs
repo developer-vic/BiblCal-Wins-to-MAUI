@@ -16,7 +16,7 @@ public partial class SplashPage : ContentPage
 		{
 			window.Page = new NavigationPage(new MainPage())
 			{
-				Title = "Bibli_Cal"
+				Title = "MoonWitness"
 			};
 		}
 	}
